@@ -20,14 +20,20 @@ class EbBookingForm {
   public function eb_generate_table() {
     $sql = "
       CREATE TABLE IF NOT EXISTS `$this->table_name` (
-        `id` int(11) NOT NULL AUTO_INCREMENT,
-        `name` varchar(220),
-        `email_address` varchar(220),
-        `contact_number` varchar(220),
-        `delivery_date` varchar(220),
-        `quantity` varchar(220),
-        `additional_notes` varchar(220),
-        PRIMARY KEY(id)
+        `id` INT(11) NOT NULL AUTO_INCREMENT,
+        `name` VARCHAR(220) DEFAULT '',
+        `email_address` VARCHAR(220) DEFAULT '',
+        `contact_number` VARCHAR(220) DEFAULT '',
+        `delivery_date` TIMESTAMP NULL DEFAULT NULL,
+        `quantity` INT(11) DEFAULT NULL,
+        `additional_notes` TEXT DEFAULT '',
+        `payment_type` VARCHAR(220) DEFAULT '',
+        `payment_reference` VARCHAR(220) DEFAULT '',
+        `payment_status` INT DEFAULT 1,
+        `booking_status` INT DEFAULT 1,
+        `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+        PRIMARY KEY (`id`)
       ) ENGINE=InnoDB AUTO_INCREMENT=1000000 DEFAULT CHARSET=latin1;
     ";
 
