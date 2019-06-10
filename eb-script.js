@@ -1,7 +1,7 @@
 jQuery(document).ready(($) => {
   flatpickr('.eb-datetime-picker', {
     enableTime: true,
-    dateFormat: 'Y-m-d h:i K',
+    dateFormat: 'Y-m-d H:i:S',
     altInput: true,
     altFormat: 'F j, Y h:i K'
   })
