@@ -1,6 +1,6 @@
 .eb-booking-form-wrapper {
   display: grid;
-  grid-template-columns: repeat(6, 16.66%);
+  grid-template-columns: repeat(6, 1fr);
   grid-gap: 10px;
 }
 
