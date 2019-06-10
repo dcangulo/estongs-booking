@@ -13,6 +13,7 @@ class EbBookingForm {
     register_activation_hook($plugin_index_path, [$this, 'eb_generate_table']);
     add_shortcode('eb_booking_form', [$this, 'eb_booking_form_render']);
     add_action('wp_enqueue_scripts', [$this, 'eb_booking_form_scripts']);
+    add_action('wp_enqueue_scripts', [$this, 'eb_booking_form_dependencies']);
     add_action('wp_ajax_eb_booking_form_process', [$this, 'eb_booking_form_process']);
     add_action('wp_ajax_nopriv_eb_booking_form_process', [$this, 'eb_booking_form_process']);
   }
@@ -57,7 +58,7 @@ class EbBookingForm {
       </div>
       <div class='eb-booking-form-delivery-date'>
         <label>Delivery Date:</label>
-        <input type='text' name='date'>
+        <input type='text' name='date' class='eb-datetime-picker'>
       </div>
       <div class='eb-booking-form-quantity'>
         <label>Quantity:</label>
@@ -88,6 +89,13 @@ class EbBookingForm {
     wp_register_script('eb-booking-form-script', plugin_dir_url(__FILE__) . 'eb-script.js');
     wp_enqueue_script('eb-booking-form-script');
     wp_localize_script('eb-booking-form-script', 'ebBookingParams', ['adminAjaxPath' => admin_url('admin-ajax.php')]);
+  }
+
+  public function eb_booking_form_dependencies() {
+    wp_register_style('eb-booking-flatpickr-style', plugin_dir_url(__FILE__) . 'flatpickr.css');
+    wp_enqueue_style('eb-booking-flatpickr-style');
+    wp_register_script('eb-booking-flatpickr-script', plugin_dir_url(__FILE__) . 'flatpickr.min.js');
+    wp_enqueue_script('eb-booking-flatpickr-script');
   }
 
   public function eb_booking_form_process() {

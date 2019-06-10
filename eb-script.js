@@ -1,4 +1,11 @@
 jQuery(document).ready(($) => {
+  flatpickr('.eb-datetime-picker', {
+    enableTime: true,
+    dateFormat: 'Y-m-d h:i K',
+    altInput: true,
+    altFormat: 'F j, Y h:i K'
+  })
+
   $('#eb-booking-form').submit((event) => {
     event.preventDefault()
 
