@@ -56,12 +56,13 @@ class EbBookingAdminTable extends WP_List_Table {
     return $cb_elem;
   }
 
-  public function column_name($item) {
+  public function column_id($item) {
     $delete_nonce = wp_create_nonce('eb_delete_booking');
-    $title = "<strong>{$item['name']}</strong>";
+    $title = "<strong>{$item['id']}</strong>";
     $actions = [
-      'view' => sprintf('<a href="?page=%s&action=%s&customer=%s">View</a>', esc_attr($_REQUEST['page']), 'view', absint($item['id'])),
-      'delete' => sprintf('<a href="?page=%s&action=%s&customer=%s&_wpnonce=%s">Delete</a>', esc_attr($_REQUEST['page']), 'delete', absint($item['id']), $delete_nonce)
+      'view' => sprintf('<a href="?page=%s&action=%s&booking=%s">View</a>', esc_attr($_REQUEST['page']), 'view', absint($item['id'])),
+      'edit' => sprintf('<a href="?page=%s&action=%s&booking=%s">Edit</a>', esc_attr($_REQUEST['page']), 'edit', absint($item['id'])),
+      'delete' => sprintf('<a href="?page=%s&action=%s&booking=%s&_wpnonce=%s">Delete</a>', esc_attr($_REQUEST['page']), 'delete', absint($item['id']), $delete_nonce)
     ];
 
     return $title . $this->row_actions($actions);
@@ -123,7 +124,7 @@ class EbBookingAdminTable extends WP_List_Table {
 
       if ( !wp_verify_nonce($nonce, 'eb_delete_booking') ) exit;
 
-      self::delete_booking(absint($_GET['customer']));
+      self::delete_booking(absint($_GET['booking']));
 
       wp_redirect(esc_url_raw(add_query_arg()));
 
