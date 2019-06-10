@@ -28,7 +28,7 @@ class EbBookingForm {
         `quantity` varchar(220),
         `additional_notes` varchar(220),
         PRIMARY KEY(id)
-      ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+      ) ENGINE=InnoDB AUTO_INCREMENT=1000000 DEFAULT CHARSET=latin1;
     ";
 
     dbDelta($sql);

@@ -70,12 +70,13 @@ class EbBookingAdminTable extends WP_List_Table {
   public function get_columns() {
     $columns = [
       'cb' => "<input type='checkbox'>",
-      'name' => __( 'Name'),
-      'email_address' => __( 'Email Address'),
-      'contact_number' => __( 'Contact Number'),
-      'delivery_date' => __( 'Date'),
-      'quantity' => __( 'Quantity'),
-      'additional_notes' => __( 'Addtional Notes')
+      'id' => __('Booking ID'),
+      'name' => __('Name'),
+      'email_address' => __('Email Address'),
+      'contact_number' => __('Contact Number'),
+      'delivery_date' => __('Date'),
+      'quantity' => __('Quantity'),
+      'additional_notes' => __('Addtional Notes')
     ];
 
     return $columns;
@@ -83,6 +84,7 @@ class EbBookingAdminTable extends WP_List_Table {
 
   public function get_sortable_columns() {
     $sortable_columns = [
+      'id' => ['id'],
       'name' => ['name'],
       'email_address' => ['email_address'],
       'delivery_date' => ['delivery_date'],
