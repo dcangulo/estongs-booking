@@ -1,0 +1,40 @@
+.eb-booking-form-wrapper {
+  display: grid;
+  grid-template-columns: repeat(6, 16.66%);
+  grid-gap: 10px;
+}
+
+.eb-booking-form-name {
+  grid-row: 1;
+  grid-column: 1 / span 2;
+}
+
+.eb-booking-form-email-address {
+  grid-row: 1;
+  grid-column: 3 / span 2;
+}
+
+.eb-booking-form-contact-number {
+  grid-row: 1;
+  grid-column: 5 / span 2;
+}
+
+.eb-booking-form-delivery-date {
+  grid-row: 2;
+  grid-column: 1 / span 3;
+}
+
+.eb-booking-form-quantity {
+  grid-row: 2;
+  grid-column: 4 / span 3;
+}
+
+.eb-booking-form-additional-notes {
+  grid-row: 3;
+  grid-column: 1 / span 6;
+}
+
+.eb-booking-form-submit {
+  grid-row: 4;
+  grid-column: 1 / span 6;
+}
