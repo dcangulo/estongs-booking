@@ -92,7 +92,7 @@ class EbBookingForm {
   }
 
   public function eb_booking_form_dependencies() {
-    wp_register_style('eb-booking-flatpickr-style', PLUGIN_ROOT_URL . '/dependencies/flatpickr.css');
+    wp_register_style('eb-booking-flatpickr-style', PLUGIN_ROOT_URL . '/dependencies/flatpickr.min.css');
     wp_enqueue_style('eb-booking-flatpickr-style');
     wp_register_script('eb-booking-flatpickr-script', PLUGIN_ROOT_URL . '/dependencies/flatpickr.min.js');
     wp_enqueue_script('eb-booking-flatpickr-script');
