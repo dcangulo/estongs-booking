@@ -44,3 +44,21 @@
   width: 50px !important;
   margin-left: -15px !important;
 }
+
+
+.flatpickr-month, .flatpickr-weekdays, .flatpickr-weekday {
+  background: #ff0028 !important;
+}
+
+.flatpickr-weekday {
+  color: #fff !important;
+}
+
+.flatpickr-day.selected {
+  background: #ff0028 !important;
+  border-color: #ff0028 !important;
+}
+
+.flatpickr-day.today {
+  border-color: #ff0028 !important;
+}
