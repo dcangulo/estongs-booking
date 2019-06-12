@@ -4,13 +4,13 @@ class EbBookingForm {
   private $wpdb;
   private $table_name;
 
-  public function __construct($plugin_index_path) {
+  public function __construct() {
     global $wpdb;
 
     $this->wpdb = $wpdb;
     $this->table_name = $wpdb->prefix . 'eb_bookings';
 
-    register_activation_hook($plugin_index_path, [$this, 'eb_generate_table']);
+    register_activation_hook(PLUGIN_INDEX_PATH, [$this, 'eb_generate_table']);
     add_shortcode('eb_booking_form', [$this, 'eb_booking_form_render']);
     add_action('wp_enqueue_scripts', [$this, 'eb_booking_form_scripts']);
     add_action('wp_enqueue_scripts', [$this, 'eb_booking_form_dependencies']);
@@ -84,17 +84,17 @@ class EbBookingForm {
   }
 
   public function eb_booking_form_scripts() {
-    wp_register_style('eb-booking-form-style', plugin_dir_url(__FILE__) . 'eb-style.css');
+    wp_register_style('eb-booking-form-style', PLUGIN_ROOT_URL . '/scripts/eb-style.css');
     wp_enqueue_style('eb-booking-form-style');
-    wp_register_script('eb-booking-form-script', plugin_dir_url(__FILE__) . 'eb-script.js');
+    wp_register_script('eb-booking-form-script', PLUGIN_ROOT_URL . '/scripts/eb-script.js');
     wp_enqueue_script('eb-booking-form-script');
     wp_localize_script('eb-booking-form-script', 'ebBookingParams', ['adminAjaxPath' => admin_url('admin-ajax.php')]);
   }
 
   public function eb_booking_form_dependencies() {
-    wp_register_style('eb-booking-flatpickr-style', plugin_dir_url(__FILE__) . 'flatpickr.css');
+    wp_register_style('eb-booking-flatpickr-style', PLUGIN_ROOT_URL . '/dependencies/flatpickr.css');
     wp_enqueue_style('eb-booking-flatpickr-style');
-    wp_register_script('eb-booking-flatpickr-script', plugin_dir_url(__FILE__) . 'flatpickr.min.js');
+    wp_register_script('eb-booking-flatpickr-script', PLUGIN_ROOT_URL . '/dependencies/flatpickr.min.js');
     wp_enqueue_script('eb-booking-flatpickr-script');
   }
 

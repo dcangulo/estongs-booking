@@ -8,13 +8,12 @@
   Author URI: https://www.davidangulo.xyz/
 */
 
-define('PER_PAGE_DEFAULT', 5);
-
 require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
 require_once(ABSPATH . 'wp-admin/includes/class-wp-list-table.php');
-require_once('eb_booking_form.php');
-require_once('eb_booking_admin_table.php');
-require_once('eb_booking_admin.php');
+require_once('constants/constants.php');
+require_once('classes/eb_booking_form.php');
+require_once('classes/eb_booking_admin_table.php');
+require_once('classes/eb_booking_admin.php');
 
-new EbBookingForm(__FILE__);
+new EbBookingForm();
 new EbBookingAdmin();
