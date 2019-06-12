@@ -10,7 +10,7 @@ class EbBookingForm {
     $this->wpdb = $wpdb;
     $this->table_name = $wpdb->prefix . 'eb_bookings';
 
-    register_activation_hook(PLUGIN_INDEX_PATH, [$this, 'eb_generate_table']);
+    register_activation_hook(EB_PLUGIN_INDEX_PATH, [$this, 'eb_generate_table']);
     add_shortcode('eb_booking_form', [$this, 'eb_booking_form_render']);
     add_action('wp_enqueue_scripts', [$this, 'eb_booking_form_scripts']);
     add_action('wp_enqueue_scripts', [$this, 'eb_booking_form_dependencies']);
@@ -43,33 +43,50 @@ class EbBookingForm {
 
   public function eb_booking_form_content() {
   ?>
-    <form id='eb-booking-form' class='eb-booking-form-wrapper'>
-      <div class='eb-booking-form-name'>
-        <label>Name:</label>
-        <input type='text' name='name'>
-      </div>
-      <div class='eb-booking-form-email-address'>
-        <label>Email Address:</label>
-        <input type='text' name='email-address'>
-      </div>
-      <div class='eb-booking-form-contact-number'>
-        <label>Contact Number:</label>
-        <input type='text' name='contact-number'>
-      </div>
-      <div class='eb-booking-form-delivery-date'>
-        <label>Delivery Date:</label>
-        <input type='text' name='date' class='eb-datetime-picker'>
-      </div>
-      <div class='eb-booking-form-quantity'>
-        <label>Quantity:</label>
-        <input type='number' name='quantity'>
-      </div>
-      <div class='eb-booking-form-additional-notes'>
-        <label>Addtional Notes:</label>
-        <textarea name='additional-notes'></textarea>
-      </div>
-      <div class='eb-booking-form-submit'>
-        <button type='submit' name='place-order'>Place Order</button>
+    <form id='eb-booking-form'>
+      <div class='row'>
+        <div class='col-md-6'>
+          <label for='name'>Name:</label>
+          <input type='text' id='name' name='name'>
+        </div>
+        <div class='col-md-6'>
+          <label for='email-address'>Email Address:</label>
+          <input type='text' id='email-address' name='email-address'>
+        </div>
+        <div class='col-md-6'>
+          <label for='contact-number'>Contact Number:</label>
+          <input type='text' id='contact-number' name='contact-number'>
+        </div>
+        <div class='col-md-6'>
+          <label for='delivery-date'>Delivery Date:</label>
+          <input type='text' id='delivery-date' name='date' class='eb-datetime-picker'>
+        </div>
+        <div class='col-md-12'>
+          <label for='address'>Address:</label>
+          <textarea id='address' name='address'></textarea>
+        </div>
+        <div class='col-md-12'>
+          <label>Products:</label>
+          <div id='eb-products'>
+          </div>
+          <div class='row'>
+            <div class='col-md-8'></div>
+            <div class='col-md-4'>
+              Total: ₱<span id='eb-product-price-total'>0.00</span>
+            </div>
+            <div class='col-md-8'></div>
+            <div class='col-md-4'>
+              <button id='eb-add-product' class='eb-button' type='button'>Add Product</button>
+            </div>
+          </div>
+        </div>
+        <div class='col-md-12'>
+          <label for='additional-notes'>Addtional Notes:</label>
+          <textarea id='additional-notes' name='additional-notes'></textarea>
+        </div>
+        <div class='col-md-12'>
+          <button type='submit' class='eb-button' name='place-order'>Place Order</button>
+        </div>
       </div>
     </form>
   <?php
@@ -84,17 +101,22 @@ class EbBookingForm {
   }
 
   public function eb_booking_form_scripts() {
-    wp_register_style('eb-booking-form-style', PLUGIN_ROOT_URL . '/scripts/eb-style.css');
+    wp_register_style('eb-booking-form-style', EB_PLUGIN_ROOT_URL . '/scripts/eb-style.css');
     wp_enqueue_style('eb-booking-form-style');
-    wp_register_script('eb-booking-form-script', PLUGIN_ROOT_URL . '/scripts/eb-script.js');
+    wp_register_script('eb-booking-form-script', EB_PLUGIN_ROOT_URL . '/scripts/eb-script.js');
     wp_enqueue_script('eb-booking-form-script');
-    wp_localize_script('eb-booking-form-script', 'ebBookingParams', ['adminAjaxPath' => admin_url('admin-ajax.php')]);
+    wp_localize_script('eb-booking-form-script', 'ebBookingParams', [
+      'adminAjaxUrl' => admin_url('admin-ajax.php'),
+      'products' => json_encode(EB_PRODUCTS)
+    ]);
   }
 
   public function eb_booking_form_dependencies() {
-    wp_register_style('eb-booking-flatpickr-style', PLUGIN_ROOT_URL . '/dependencies/flatpickr.min.css');
+    wp_register_style('eb-booking-flatpickr-style', EB_PLUGIN_ROOT_URL . '/dependencies/flatpickr.min.css');
     wp_enqueue_style('eb-booking-flatpickr-style');
-    wp_register_script('eb-booking-flatpickr-script', PLUGIN_ROOT_URL . '/dependencies/flatpickr.min.js');
+    wp_register_style('eb-booking-bootstrap-grid-style', EB_PLUGIN_ROOT_URL . '/dependencies/bootstrap-grid.min.css');
+    wp_enqueue_style('eb-booking-bootstrap-grid-style');
+    wp_register_script('eb-booking-flatpickr-script', EB_PLUGIN_ROOT_URL . '/dependencies/flatpickr.min.js');
     wp_enqueue_script('eb-booking-flatpickr-script');
   }
 

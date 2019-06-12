@@ -1,42 +1,23 @@
-.eb-booking-form-wrapper {
-  display: grid;
-  grid-template-columns: repeat(6, 1fr);
-  grid-gap: 10px;
+.eb-remove-icon {
+  height: 20px !important;
+  width: 20px !important;
+  margin-top: 10px;
+  cursor: pointer;
 }
 
-.eb-booking-form-name {
-  grid-row: 1;
-  grid-column: 1 / span 2;
+.eb-selected-row {
+  margin: 0 !important;
 }
 
-.eb-booking-form-email-address {
-  grid-row: 1;
-  grid-column: 3 / span 2;
-}
-
-.eb-booking-form-contact-number {
-  grid-row: 1;
-  grid-column: 5 / span 2;
-}
-
-.eb-booking-form-delivery-date {
-  grid-row: 2;
-  grid-column: 1 / span 3;
-}
-
-.eb-booking-form-quantity {
-  grid-row: 2;
-  grid-column: 4 / span 3;
-}
-
-.eb-booking-form-additional-notes {
-  grid-row: 3;
-  grid-column: 1 / span 6;
-}
-
-.eb-booking-form-submit {
-  grid-row: 4;
-  grid-column: 1 / span 6;
+.eb-button {
+  background-color: #ff0028;
+  padding: 15px 30px 13px;
+  border-color: #ff0028;
+  color: #fff;
+  font-size: 13px;
+  text-transform: uppercase;
+  border-radius: 3px;
+  cursor: pointer;
 }
 
 .flatpickr-calendar input[type='number'] {

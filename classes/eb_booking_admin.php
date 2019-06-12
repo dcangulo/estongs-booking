@@ -206,7 +206,7 @@ class EbBookingAdmin {
     $option = 'per_page';
     $args = [
       'label' => 'Bookings',
-      'default' => PER_PAGE_DEFAULT,
+      'default' => EB_PER_PAGE_DEFAULT,
       'option' => 'bookings_per_page'
     ];
 

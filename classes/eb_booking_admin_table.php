@@ -17,7 +17,7 @@ class EbBookingAdminTable extends WP_List_Table {
     self::$table_name = self::$wpdb->prefix . 'eb_bookings';
   }
 
-  public static function get_bookings($per_page = PER_PAGE_DEFAULT, $page_number = 1) {
+  public static function get_bookings($per_page = EB_PER_PAGE_DEFAULT, $page_number = 1) {
     $sql = 'SELECT * FROM ' . self::$table_name;
 
     if ( !empty($_REQUEST['orderby']) ) {
@@ -106,7 +106,7 @@ class EbBookingAdminTable extends WP_List_Table {
 
     $this->process_bulk_action();
 
-    $per_page = $this->get_items_per_page('bookings_per_page', PER_PAGE_DEFAULT);
+    $per_page = $this->get_items_per_page('bookings_per_page', EB_PER_PAGE_DEFAULT);
     $current_page = $this->get_pagenum();
     $total_items = self::record_count();
 

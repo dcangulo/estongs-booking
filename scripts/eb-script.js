@@ -1,9 +1,26 @@
 jQuery(document).ready(($) => {
+  const products = JSON.parse(ebBookingParams.products)
+  let productIndex = 0
+
+  ebAddProduct()
   flatpickr('.eb-datetime-picker', {
     enableTime: true,
     dateFormat: 'Y-m-d H:i:S',
     altInput: true,
     altFormat: 'F j, Y h:i K'
+  })
+
+  $(document).on('change', '.eb-product-selected', ebCalculateTotal)
+  $(document).on('change', '.eb-product-type', ebCalculateTotal)
+  $(document).on('keyup', '.eb-product-quantity', ebCalculateTotal)
+  $('#eb-add-product').click(ebAddProduct)
+
+  $(document).on('click', '.eb-icon-container', (event) => {
+    let removeIndex = event.currentTarget.getAttribute('index')
+
+    $('#eb-product-row-' + removeIndex).remove()
+
+    ebCalculateTotal()
   })
 
   $('#eb-booking-form').submit((event) => {
@@ -24,11 +41,66 @@ jQuery(document).ready(($) => {
 
     $.ajax({
       type: 'post',
-      url: ebBookingParams.adminAjaxPath,
+      url: ebBookingParams.adminAjaxUrl,
       data: params,
       success: (response) => {
         console.log(response)
       }
     })
   })
+
+  function ebAddProduct() {
+    const options = products.map((product) => {
+      return `<option value='${product.sku}'>${product.name}</option>`
+    })
+
+    const template = `
+      <div id='eb-product-row-${productIndex}' class='row eb-selected-row'>
+        <div class='col-md-5'>
+          <select class='eb-product-selected'>
+            ${options}
+          </select>
+        </div>
+        <div class='col-md-3'>
+          <select class='eb-product-type'>
+            <option value='regular'>Regular</option>
+            <option value='spicy'>Spicy</option>
+          </select>
+        </div>
+        <div class='col-md-3'>
+          <input type='number' class='eb-product-quantity' placeholder='Quantity'>
+        </div>
+        <div class='col-md-1'>
+          <span class='eb-icon-container' index='${productIndex}'>
+            <svg viewPort='0 0 12 12' version='1.1' xmlns='http://www.w3.org/2000/svg' class='eb-remove-icon'>
+              <line x1='1' y1='20' x2='20' y2='1' stroke='black' stroke-width='2' />
+              <line x1='1' y1='1' x2='20' y2='20' stroke='black' stroke-width='2' />
+            </svg>
+          </span>
+        </div>
+      </div>
+    `
+
+    productIndex++
+
+    $('#eb-products').append(template)
+  }
+
+  function ebCalculateTotal() {
+    const selectedProductRows = $('#eb-products').children('div').length
+    let total = 0
+
+    for ( let index of Array(selectedProductRows).keys() ) {
+      const typeEl = $('.eb-product-type')[index],
+            quantityEl = $('.eb-product-quantity')[index],
+            productSelected = $('.eb-product-selected')[index].value,
+            quantity = !quantityEl.value ? 0 : parseInt(quantityEl.value),
+            price = (products.filter((product) => product.sku === productSelected).shift() || {}).price || 0,
+            type = typeEl.value === 'spicy' ? 100 : 0
+
+      total += quantity * price + type
+    }
+
+    $('#eb-product-price-total').text(total.toFixed(2))
+  }
 })
