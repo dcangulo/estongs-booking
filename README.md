@@ -8,7 +8,7 @@ Version 1.0.0
 1. Add CAPTCHA
 2. ~~Make form responsive~~
 3. ~~Improve form design~~
-4. ~Form success callback~
+4. ~~Form success callback~~
 5. ~~Date picker color~~
 6. ~~Add item to form~~
 7. ~~Compute price in form~~
