@@ -1,6 +1,8 @@
 jQuery(document).ready(($) => {
   const products = JSON.parse(ebBookingParams.products)
-  let productIndex = 0
+  let selectedProducts = [],
+      selectedTotal = 0,
+      productIndex = 0
 
   ebAddProduct()
   flatpickr('.eb-datetime-picker', {
@@ -34,6 +36,9 @@ jQuery(document).ready(($) => {
       ebBookingObject[name] = field.value
     })
 
+    ebBookingObject.products = selectedProducts
+    ebBookingObject.total = selectedTotal
+
     const params = {
       action: 'eb_booking_form_process',
       eb_booking: ebBookingObject
@@ -44,7 +49,9 @@ jQuery(document).ready(($) => {
       url: ebBookingParams.adminAjaxUrl,
       data: params,
       success: (response) => {
-        console.log(response)
+        $('#eb-booking-form').hide()
+        $('#eb-success h3').text(response)
+        $('#eb-success').show()
       }
     })
   })
@@ -87,8 +94,14 @@ jQuery(document).ready(($) => {
   }
 
   function ebCalculateTotal() {
+    $('#eb-product-price-total').text(ebGetTotal())
+  }
+
+  function ebGetTotal() {
     const selectedProductRows = $('#eb-products').children('div').length
-    let total = 0
+
+    selectedProducts = []
+    selectedTotal = 0
 
     for ( let index of Array(selectedProductRows).keys() ) {
       const typeEl = $('.eb-product-type')[index],
@@ -98,9 +111,20 @@ jQuery(document).ready(($) => {
             price = (products.filter((product) => product.sku === productSelected).shift() || {}).price || 0,
             type = typeEl.value === 'spicy' ? 100 : 0
 
-      total += quantity * price + type
+      let product = {
+        sku: productSelected,
+        type: typeEl.value,
+        quantity: quantity,
+        price: price + type
+      }
+
+      selectedProducts.push(product)
+
+      selectedTotal += quantity * (price + type)
     }
 
-    $('#eb-product-price-total').text(total.toFixed(2))
+    selectedTotal = selectedTotal.toFixed(2)
+
+    return selectedTotal
   }
 })

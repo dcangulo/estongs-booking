@@ -26,8 +26,10 @@ class EbBookingForm {
         `email_address` VARCHAR(220) DEFAULT '',
         `contact_number` VARCHAR(220) DEFAULT '',
         `delivery_date` TIMESTAMP NULL DEFAULT NULL,
-        `quantity` INT(11) DEFAULT NULL,
+        `address` TEXT DEFAULT '',
+        `products` TEXT DEFAULT '',
         `additional_notes` TEXT DEFAULT '',
+        `total` INT(11) DEFAULT 0,
         `payment_type` VARCHAR(220) DEFAULT '',
         `payment_reference` VARCHAR(220) DEFAULT '',
         `payment_status` INT DEFAULT 1,
@@ -59,7 +61,7 @@ class EbBookingForm {
         </div>
         <div class='col-md-6'>
           <label for='delivery-date'>Delivery Date:</label>
-          <input type='text' id='delivery-date' name='date' class='eb-datetime-picker'>
+          <input type='text' id='delivery-date' name='delivery-date' class='eb-datetime-picker'>
         </div>
         <div class='col-md-12'>
           <label for='address'>Address:</label>
@@ -89,6 +91,9 @@ class EbBookingForm {
         </div>
       </div>
     </form>
+    <div id='eb-success'>
+      <h3 class='eb-success-message'></h3>
+    </div>
   <?php
   }
 
@@ -121,21 +126,29 @@ class EbBookingForm {
   }
 
   public function eb_booking_form_process() {
-    $eb_booking = $_POST['eb_booking'];
+    try {
+      $eb_booking = $_POST['eb_booking'];
 
-    $this->wpdb->insert($this->table_name, [
-      'name' => $eb_booking['name'],
-      'email_address' => $eb_booking['email_address'],
-      'contact_number' => $eb_booking['contact_number'],
-      'delivery_date' => $eb_booking['date'],
-      'quantity' => $eb_booking['quantity'],
-      'additional_notes' => $eb_booking['additional_notes']
-    ]);
+      $this->wpdb->insert($this->table_name, [
+        'name' => $eb_booking['name'],
+        'email_address' => $eb_booking['email_address'],
+        'contact_number' => $eb_booking['contact_number'],
+        'delivery_date' => $eb_booking['delivery_date'],
+        'address' => $eb_booking['address'],
+        'products' => json_encode($eb_booking['products']),
+        'additional_notes' => $eb_booking['additional_notes'],
+        'total' => $eb_booking['total']
+      ]);
 
-    $new_booking_query = "SELECT * FROM $this->table_name WHERE id='{$this->wpdb->insert_id}'";
-    $new_booking = $this->wpdb->get_row($new_booking_query);
+      // $new_booking_query = "SELECT * FROM $this->table_name WHERE id='{$this->wpdb->insert_id}'";
+      // $new_booking = $this->wpdb->get_row($new_booking_query);
 
-    echo json_encode($new_booking);
+      // echo json_encode($new_booking);
+      echo 'Your order has been sent. We will reply to you via email in 24 hours.';
+    }
+    catch(Exception $e) {
+      echo EB_ERROR_MESSAGE;
+    }
 
     wp_die();
   }

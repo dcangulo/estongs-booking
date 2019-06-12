@@ -8,7 +8,7 @@ Version 1.0.0
 1. Add CAPTCHA
 2. ~~Make form responsive~~
 3. ~~Improve form design~~
-4. Form success callback
+4. ~Form success callback~
 5. ~~Date picker color~~
 6. ~~Add item to form~~
 7. ~~Compute price in form~~
@@ -17,6 +17,9 @@ Version 1.0.0
 10. Email Notifications
 11. Calendar View
 12. Add to cart (branch)
+13. Callback design
+14. Order summary
+15. Form validation
 
 ## License
 Copyright © 2019 David Angulo, released under the MIT license, see [LICENSE](LICENSE).

@@ -2,6 +2,7 @@
 define('EB_PER_PAGE_DEFAULT', 5);
 define('EB_PLUGIN_ROOT_URL', plugins_url('estongs-booking'));
 define('EB_PLUGIN_INDEX_PATH', join('/', [WP_PLUGIN_DIR, 'estongs-booking', 'index.php']));
+define('EB_ERROR_MESSAGE', 'An error has occured.');
 define('EB_PRODUCTS', [
   [
     'name' => 'Small Size (3kg / 10-12pax)',
@@ -16,7 +17,7 @@ define('EB_PRODUCTS', [
     'tax' => 0
   ],
   [
-    'name' => 'Small Size (5kg / 20-25pax)',
+    'name' => 'Large Size (5kg / 20-25pax)',
     'sku' => 'LS5KG',
     'price' => 3500,
     'tax' => 0

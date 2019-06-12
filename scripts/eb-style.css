@@ -20,6 +20,20 @@
   cursor: pointer;
 }
 
+#eb-success {
+  display: none;
+}
+
+.eb-success-message {
+  text-align: center;
+  border-style: solid;
+  border-width: 1px;
+  padding: 20px 15px;
+  line-height: 1.4em;
+  border-radius: 2px;
+  clear: both;
+}
+
 .flatpickr-calendar input[type='number'] {
   all: unset !important;
   width: 50px !important;
