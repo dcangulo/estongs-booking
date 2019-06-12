@@ -92,8 +92,49 @@ class EbBookingAdmin {
           <td><?php echo $booking->delivery_date; ?></td>
         </tr>
         <tr>
-          <th scope='row'>Quantity</th>
-          <td><?php echo $booking->quantity; ?></td>
+          <th scope='row'>Address</th>
+          <td><?php echo $booking->address; ?></td>
+        </tr>
+        <tr>
+          <th scope='row'>Products</th>
+          <td>
+            <table>
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Type</th>
+                  <th>Quantity</th>
+                </tr>
+              </thead>
+              <tbody>
+              <?php
+                foreach(json_decode($booking->products) as $product) {
+              ?>
+                  <tr>
+                    <td>
+                      <?php
+                        $selected_product_name = '';
+
+                        foreach(EB_PRODUCTS as $eb_product) {
+                          if ( $eb_product['sku'] === $product->sku ) {
+                            $selected_product_name = $eb_product['name'];
+                            break;
+                          }
+                        }
+
+                        echo $selected_product_name;
+                      ?>
+                    <td><?php echo $product->type; ?></td>
+                    <td><?php echo $product->quantity; ?></td>
+                  </tr>
+              <?php } ?>
+              </tbody>
+            </table>
+          </td>
+        </tr>
+        <tr>
+          <th scope='row'>Total</th>
+          <td>₱<?php echo $booking->total; ?>.00</td>
         </tr>
         <tr>
           <th scope='row'>Additional Notes</th>
@@ -109,11 +150,11 @@ class EbBookingAdmin {
         </tr>
         <tr>
           <th scope='row'>Payment Status</th>
-          <td><?php echo $booking->payment_status; ?></td>
+          <td><?php echo EB_PAYMENT_STATUSES[$booking->payment_status]; ?></td>
         </tr>
         <tr>
           <th scope='row'>Booking Status</th>
-          <td><?php echo $booking->booking_status; ?></td>
+          <td><?php echo EB_BOOKING_STATUSES[$booking->booking_status]; ?></td>
         </tr>
       </table>
     </div>
@@ -153,8 +194,49 @@ class EbBookingAdmin {
             <td><?php echo $booking->delivery_date; ?></td>
           </tr>
           <tr>
-            <th scope='row'>Quantity</th>
-            <td><?php echo $booking->quantity; ?></td>
+            <th scope='row'>Address</th>
+            <td><?php echo $booking->address; ?></td>
+          </tr>
+          <tr>
+            <th scope='row'>Products</th>
+            <td>
+              <table>
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Type</th>
+                    <th>Quantity</th>
+                  </tr>
+                </thead>
+                <tbody>
+                <?php
+                  foreach(json_decode($booking->products) as $product) {
+                ?>
+                    <tr>
+                      <td>
+                        <?php
+                          $selected_product_name = '';
+
+                          foreach(EB_PRODUCTS as $eb_product) {
+                            if ( $eb_product['sku'] === $product->sku ) {
+                              $selected_product_name = $eb_product['name'];
+                              break;
+                            }
+                          }
+
+                          echo $selected_product_name;
+                        ?>
+                      <td><?php echo $product->type; ?></td>
+                      <td><?php echo $product->quantity; ?></td>
+                    </tr>
+                <?php } ?>
+                </tbody>
+              </table>
+            </td>
+          </tr>
+          <tr>
+            <th scope='row'>Total</th>
+            <td>₱<?php echo $booking->total; ?>.00</td>
           </tr>
           <tr>
             <th scope='row'>Additional Notes</th>
@@ -172,8 +254,13 @@ class EbBookingAdmin {
             <th scope='row'>Payment Status</th>
             <td>
               <select name='eb-payment-status'>
-                <option value='1' selected>Pending</option>
-                <option value='2'>Paid</option>
+                <?php
+                  foreach(EB_PAYMENT_STATUSES as $key => $value) {
+                    $selected = $booking->payment_status == $key ? 'selected' : '';
+
+                    echo "<option value='$key' $selected>$value</option>";
+                  }
+                ?>
               </select>
             </td>
           </tr>
@@ -181,8 +268,13 @@ class EbBookingAdmin {
             <th scope='row'>Booking Status</th>
             <td>
               <select name='eb-booking-status'>
-                <option value='1' selected>Processing</option>
-                <option value='2'>Completed</option>
+                <?php
+                  foreach(EB_BOOKING_STATUSES as $key => $value) {
+                    $selected = $booking->booking_status == $key ? 'selected' : '';
+
+                    echo "<option value='$key' $selected>$value</option>";
+                  }
+                ?>
               </select>
             </td>
           </tr>

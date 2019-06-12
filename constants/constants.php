@@ -23,3 +23,11 @@ define('EB_PRODUCTS', [
     'tax' => 0
   ]
 ]);
+define('EB_PAYMENT_STATUSES', [
+  '1' => 'AWAITING PAYMENT',
+  '2' => 'PAID'
+]);
+define('EB_BOOKING_STATUSES', [
+  '1' => 'PROCESSING',
+  '2' => 'DELIVERED'
+]);

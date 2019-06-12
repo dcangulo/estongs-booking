@@ -76,8 +76,7 @@ class EbBookingAdminTable extends WP_List_Table {
       'email_address' => __('Email Address'),
       'contact_number' => __('Contact Number'),
       'delivery_date' => __('Date'),
-      'quantity' => __('Quantity'),
-      'additional_notes' => __('Addtional Notes')
+      'address' => __('Address')
     ];
 
     return $columns;
@@ -88,8 +87,7 @@ class EbBookingAdminTable extends WP_List_Table {
       'id' => ['id'],
       'name' => ['name'],
       'email_address' => ['email_address'],
-      'delivery_date' => ['delivery_date'],
-      'quantity' => ['quantity']
+      'delivery_date' => ['delivery_date']
     ];
 
     return $sortable_columns;
