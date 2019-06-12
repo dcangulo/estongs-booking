@@ -112,7 +112,8 @@ class EbBookingForm {
     wp_enqueue_script('eb-booking-form-script');
     wp_localize_script('eb-booking-form-script', 'ebBookingParams', [
       'adminAjaxUrl' => admin_url('admin-ajax.php'),
-      'products' => json_encode(EB_PRODUCTS)
+      'products' => json_encode(EB_PRODUCTS),
+      'errorMsg' => EB_ERROR_MESSAGE
     ]);
   }
 
@@ -140,11 +141,10 @@ class EbBookingForm {
         'total' => $eb_booking['total']
       ]);
 
-      // $new_booking_query = "SELECT * FROM $this->table_name WHERE id='{$this->wpdb->insert_id}'";
-      // $new_booking = $this->wpdb->get_row($new_booking_query);
+      $new_booking_query = "SELECT * FROM $this->table_name WHERE id='{$this->wpdb->insert_id}'";
+      $new_booking = $this->wpdb->get_row($new_booking_query);
 
-      // echo json_encode($new_booking);
-      echo 'Your order has been sent. We will reply to you via email in 24 hours.';
+      echo json_encode($new_booking);
     }
     catch(Exception $e) {
       echo EB_ERROR_MESSAGE;

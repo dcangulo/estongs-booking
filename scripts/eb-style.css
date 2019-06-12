@@ -20,6 +20,17 @@
   cursor: pointer;
 }
 
+.eb-summary-title {
+  font-size: 11px;
+  text-transform: uppercase;
+  height: 25px;
+}
+
+.eb-summary-value {
+  font-size: 18px;
+  font-weight: bold;
+}
+
 #eb-success {
   display: none;
 }

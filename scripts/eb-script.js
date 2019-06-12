@@ -49,8 +49,91 @@ jQuery(document).ready(($) => {
       url: ebBookingParams.adminAjaxUrl,
       data: params,
       success: (response) => {
+        if ( response === ebBookingParams.errorMsg ) {
+          $('#eb-booking-form').hide()
+          $('#eb-success h3').text(response)
+          $('#eb-success').show()
+
+          return
+        }
+
+        const order = JSON.parse(response)
+              orderProducts = JSON.parse(order.products)
+
+        const products = orderProducts.map((product) => {
+          return `
+            <tr>
+              <td>${product.sku} (${product.type}) x ${product.quantity}</td>
+              <td>₱${parseFloat(product.price).toFixed(2)}</td>
+            </tr>`
+        })
+
+        const template = `
+          <h2>Order received</h2>
+          <h3>Thank you. Your order has been received.</h3>
+          <table>
+            <tr>
+              <td>
+                <div class='eb-summary-title'>Order Number:</div>
+                <div class='eb-summary-value'>${order.id}</div>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <div class='eb-summary-title'>Name:</div>
+                <div class='eb-summary-value'>${order.name}</div>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <div class='eb-summary-title'>Email Address:</div>
+                <div class='eb-summary-value'>${order.email_address}</div>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <div class='eb-summary-title'>Contact Number:</div>
+                <div class='eb-summary-value'>${order.contact_number}</div>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <div class='eb-summary-title'>Address:</div>
+                <div class='eb-summary-value'>${order.address}</div>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <div class='eb-summary-title'>Delivery Date:</div>
+                <div class='eb-summary-value'>${order.delivery_date}</div>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <div class='eb-summary-title'>Total:</div>
+                <div class='eb-summary-value'>₱${parseFloat(order.total).toFixed(2)}</div>
+              </td>
+            </tr>
+          </table>
+          <h2>Order details</h2>
+          <table>
+            <tr>
+              <th>Product</th>
+              <th>Total</th>
+            </tr>
+            ${products}
+            <tr>
+              <th>Total:</th>
+              <td>₱${parseFloat(order.total).toFixed(2)}</td>
+            </tr>
+            <tr>
+              <th>Additional Note:</th>
+              <td>${order.additional_notes}</td>
+            </tr>
+          </table>
+        `
         $('#eb-booking-form').hide()
-        $('#eb-success h3').text(response)
+        $('#eb-success').html(template)
         $('#eb-success').show()
       }
     })
@@ -111,16 +194,18 @@ jQuery(document).ready(($) => {
             price = (products.filter((product) => product.sku === productSelected).shift() || {}).price || 0,
             type = typeEl.value === 'spicy' ? 100 : 0
 
+      const productTotal = quantity * (price + type)
+
       let product = {
         sku: productSelected,
         type: typeEl.value,
         quantity: quantity,
-        price: price + type
+        price: productTotal
       }
 
       selectedProducts.push(product)
 
-      selectedTotal += quantity * (price + type)
+      selectedTotal += productTotal
     }
 
     selectedTotal = selectedTotal.toFixed(2)

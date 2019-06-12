@@ -17,9 +17,11 @@ Version 1.0.0
 10. Email Notifications
 11. Calendar View
 12. Add to cart (branch)
-13. Callback design
-14. Order summary
+13. ~~Callback design~~
+14. ~~Order summary~~
 15. Form validation
+16. Ajax loader on submit
+17. Calculate total on backend
 
 ## License
 Copyright © 2019 David Angulo, released under the MIT license, see [LICENSE](LICENSE).
