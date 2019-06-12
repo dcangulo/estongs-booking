@@ -25,7 +25,8 @@ define('EB_PRODUCTS', [
 ]);
 define('EB_PAYMENT_STATUSES', [
   '1' => 'AWAITING PAYMENT',
-  '2' => 'PAID'
+  '2' => 'VALIDATING PAYMENT',
+  '3' => 'PAID'
 ]);
 define('EB_BOOKING_STATUSES', [
   '1' => 'PROCESSING',
