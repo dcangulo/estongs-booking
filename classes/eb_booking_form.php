@@ -167,7 +167,7 @@ class EbBookingForm {
     wp_enqueue_script('eb-booking-form-script');
     wp_localize_script('eb-booking-form-script', 'ebBookingParams', [
       'adminAjaxUrl' => admin_url('admin-ajax.php'),
-      'products' => json_encode(EB_PRODUCTS),
+      'products' => json_encode([]),
       'errorMsg' => EB_ERROR_MESSAGE
     ]);
   }

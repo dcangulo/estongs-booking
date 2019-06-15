@@ -105,27 +105,7 @@ class EbBookingAdmin {
                 </tr>
               </thead>
               <tbody>
-              <?php
-                foreach(json_decode($booking->products) as $product) {
-              ?>
-                  <tr>
-                    <td>
-                      <?php
-                        $selected_product_name = '';
 
-                        foreach(EB_PRODUCTS as $eb_product) {
-                          if ( $eb_product['sku'] === $product->sku ) {
-                            $selected_product_name = $eb_product['name'];
-                            break;
-                          }
-                        }
-
-                        echo $selected_product_name;
-                      ?>
-                    <td><?php echo $product->type; ?></td>
-                    <td><?php echo $product->quantity; ?></td>
-                  </tr>
-              <?php } ?>
               </tbody>
             </table>
           </td>
