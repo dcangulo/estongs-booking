@@ -18,16 +18,7 @@ class EbBookingAdmin {
   }
 
   public function eb_booking_menu() {
-    $hook = add_menu_page(
-      'Booking List',
-      'Bookings',
-      'manage_options',
-      'eb_booking_list',
-      '',
-      'dashicons-calendar-alt',
-      4,
-      [$this, 'eb_booking_admin_page']
-    );
+    $hook = add_menu_page('All Bookings', 'Bookings', 'manage_options', 'eb-bookings', [$this, 'eb_booking_admin_page'], 'dashicons-calendar-alt', 4);
 
     add_action("load-$hook", [$this, 'eb_screen_options']);
   }
@@ -46,7 +37,7 @@ class EbBookingAdmin {
   public function eb_booking_admin_index() {
   ?>
     <div class='wrap'>
-      <h1>Booking List</h1>
+      <h1>Bookings</h1>
       <div id='post-body' class='metabox-holder columns-2'>
         <div id='post-body-content'>
           <div class='meta-box-sortables ui-sortable'>
@@ -149,7 +140,6 @@ class EbBookingAdmin {
 
     $booking_query = "SELECT * FROM " . EB_BOOKINGS_TABLE . " WHERE id='$booking_id'";
     $booking = $this->wpdb->get_row($booking_query);
-    $delete_nonce = wp_create_nonce('eb_delete_booking');
   ?>
     <div class='wrap'>
       <h1 class='wp-heading-inline'>Editing Booking #<?php echo $booking_id; ?></h1>

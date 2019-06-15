@@ -22,7 +22,7 @@ Version 1.0.0
 15. ~~Ajax loader on submit~~
 16. ~~Calculate total on backend~~
 17. ~~Database associations~~
-18. **Products crud**
+18. ~~Products crud~~
 19. **Invalid dates crud**
 20. **Reservations crud**
 21. **Settings start date**
