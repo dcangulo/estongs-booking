@@ -124,10 +124,6 @@ class EbBookingProductsTable extends WP_List_Table {
       if ( !wp_verify_nonce($nonce, 'eb_delete_product') ) exit;
 
       self::delete_product(absint($_GET['product']));
-
-      wp_redirect(esc_url_raw(add_query_arg()));
-
-      exit;
     }
 
     $action_1_delete = (isset($_POST['action']) && $_POST['action'] == 'bulk-delete');
@@ -139,10 +135,6 @@ class EbBookingProductsTable extends WP_List_Table {
       foreach($record_ids as $record_id) {
         self::delete_product($record_id);
       }
-
-      wp_redirect(esc_url_raw(add_query_arg()));
-
-      exit;
     }
   }
 

@@ -121,10 +121,6 @@ class EbBookingAdminTable extends WP_List_Table {
       if ( !wp_verify_nonce($nonce, 'eb_delete_booking') ) exit;
 
       self::delete_booking(absint($_GET['booking']));
-
-      wp_redirect(esc_url_raw(add_query_arg()));
-
-      exit;
     }
 
     $action_1_delete = (isset($_POST['action']) && $_POST['action'] == 'bulk-delete');
@@ -136,10 +132,6 @@ class EbBookingAdminTable extends WP_List_Table {
       foreach($record_ids as $record_id) {
         self::delete_booking($record_id);
       }
-
-      wp_redirect(esc_url_raw(add_query_arg()));
-
-      exit;
     }
   }
 
