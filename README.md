@@ -25,7 +25,7 @@ Version 1.0.0
 18. ~~Products crud~~
 19. ~~Invalid dates crud~~
 20. **Reservations crud**
-21. **Settings start date**
+21. ~~Settings start date~~
 22. **Migrations**
 23. **Paypal (branch)**
 24. **Cart (branch)**
