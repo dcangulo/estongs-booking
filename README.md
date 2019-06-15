@@ -21,7 +21,7 @@ Version 1.0.0
 14. ~~Form validation~~
 15. ~~Ajax loader on submit~~
 16. **Calculate total on backend**
-17. **Database associations**
+17. ~~Database associations~~
 18. **Products crud**
 19. **Invalid dates crud**
 20. **Reservations crud**
