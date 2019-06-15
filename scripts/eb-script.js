@@ -47,6 +47,8 @@ jQuery(document).ready(($) => {
       eb_booking: ebBookingObject
     }
 
+    ebToggleOverlayLoader()
+
     $.ajax({
       type: 'post',
       url: ebBookingParams.adminAjaxUrl,
@@ -56,6 +58,7 @@ jQuery(document).ready(($) => {
           $('#eb-booking-form').hide()
           $('#eb-success h3').text(response)
           $('#eb-success').show()
+          ebToggleOverlayLoader(false)
 
           return
         }
@@ -138,6 +141,7 @@ jQuery(document).ready(($) => {
         $('#eb-booking-form').hide()
         $('#eb-success').html(template)
         $('#eb-success').show()
+        ebToggleOverlayLoader(false)
       }
     })
   })
@@ -261,5 +265,18 @@ jQuery(document).ready(($) => {
     }
 
     return isValid
+  }
+
+  function ebToggleOverlayLoader(visible = true) {
+    if ( visible ) {
+      $('body').prepend(`
+        <div class='eb-overlay'>
+          <div class='eb-overlay-loader'>
+            <img src='https://davidangulo.xyz/estongs-staging/wp-content/uploads/2019/06/loader.gif'>
+          </div>
+        </div>
+      `)
+    }
+    else $('.eb-overlay').hide()
   }
 })

@@ -19,7 +19,7 @@ Version 1.0.0
 12. ~~Callback design~~
 13. ~~Order summary~~
 14. ~~Form validation~~
-15. **Ajax loader on submit**
+15. ~~Ajax loader on submit~~
 16. **Calculate total on backend**
 17. **Database associations**
 18. **Products crud**
