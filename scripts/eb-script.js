@@ -32,7 +32,8 @@ jQuery(document).ready(($) => {
   $('#eb-booking-form').submit((event) => {
     event.preventDefault()
 
-    let ebBookingObject = {}
+    let ebBookingObject = {},
+        combinedProducts = []
 
     $('#eb-booking-form').serializeArray().forEach((field) => {
       const name = field.name.replace(/-/g, '_')
@@ -40,8 +41,26 @@ jQuery(document).ready(($) => {
       ebBookingObject[name] = field.value
     })
 
-    ebBookingObject.products = selectedProducts
-    ebBookingObject.total = selectedTotal
+    selectedProducts.forEach((selectedProduct) => {
+      if ( combinedProducts.some((combinedProduct) => combinedProduct.sku === selectedProduct.sku) ) {
+        let matchedProduct = combinedProducts.filter((combinedProduct) =>
+          combinedProduct.sku === selectedProduct.sku
+        ).shift()
+
+        matchedProduct.quantity += selectedProduct.quantity
+        matchedProduct.price += selectedProduct.price
+
+        combinedProducts = combinedProducts.filter((combinedProduct) =>
+          combinedProduct.sku !== selectedProduct.sku
+        ).concat(matchedProduct)
+      }
+      else {
+        combinedProducts.push(selectedProduct)
+      }
+    })
+
+    ebBookingObject.products = combinedProducts
+    ebBookingObject.total = parseFloat(selectedTotal)
 
     if ( !ebIsFormValid(ebBookingObject) ) return
 
@@ -67,13 +86,13 @@ jQuery(document).ready(($) => {
         }
 
         const order = JSON.parse(response)
-              orderProducts = JSON.parse(order.products)
+        const products = order.products.map((product) => {
+          const totalProductPrice = parseFloat(product.price) * parseFloat(product.quantity)
 
-        const products = orderProducts.map((product) => {
           return `
             <tr>
-              <td>${product.sku} (${product.type}) x ${product.quantity}</td>
-              <td>₱${parseFloat(product.price).toFixed(2)}</td>
+              <td>${product.name} x ${product.quantity}</td>
+              <td>₱${totalProductPrice.toFixed(2)}</td>
             </tr>`
         })
 
@@ -151,7 +170,7 @@ jQuery(document).ready(($) => {
 
   function ebAddProduct() {
     const options = products.map((product) => {
-      return `<option value='${product.sku}'>${product.name}</option>`
+      return `<option data-id='${product.id}' value='${product.sku}'>${product.name}</option>`
     })
 
     const template = `
@@ -197,18 +216,17 @@ jQuery(document).ready(($) => {
     selectedTotal = 0
 
     for ( let index of Array(selectedProductRows).keys() ) {
-      const typeEl = $('.eb-product-type')[index],
-            quantityEl = $('.eb-product-quantity')[index],
+      const quantityEl = $('.eb-product-quantity')[index],
             productSelected = $('.eb-product-selected')[index].value,
+            productSelectedId = $('.eb-product-selected option:selected')[index].getAttribute('data-id'),
             quantity = !quantityEl.value ? 0 : parseInt(quantityEl.value),
-            price = (products.filter((product) => product.sku === productSelected).shift() || {}).price || 0,
-            type = typeEl.value === 'spicy' ? 100 : 0
+            price = (products.filter((product) => product.sku === productSelected).shift() || {}).price || 0
 
-      const productTotal = quantity * (price + type)
+      const productTotal = quantity * price
 
       let product = {
+        id: productSelectedId,
         sku: productSelected,
-        type: typeEl.value,
         quantity: quantity,
         price: productTotal
       }
@@ -218,7 +236,7 @@ jQuery(document).ready(($) => {
       selectedTotal += productTotal
     }
 
-    selectedTotal = parseFloat(selectedTotal.toFixed(2))
+    selectedTotal = selectedTotal.toFixed(2)
 
     return selectedTotal
   }

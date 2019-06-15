@@ -161,13 +161,15 @@ class EbBookingForm {
   }
 
   public function eb_booking_form_scripts() {
+    $products = $this->wpdb->get_results('SELECT * FROM ' . EB_PRODUCTS_TABLE);
+
     wp_register_style('eb-booking-form-style', EB_PLUGIN_ROOT_URL . '/scripts/eb-style.css');
     wp_enqueue_style('eb-booking-form-style');
     wp_register_script('eb-booking-form-script', EB_PLUGIN_ROOT_URL . '/scripts/eb-script.js');
     wp_enqueue_script('eb-booking-form-script');
     wp_localize_script('eb-booking-form-script', 'ebBookingParams', [
       'adminAjaxUrl' => admin_url('admin-ajax.php'),
-      'products' => json_encode([]),
+      'products' => json_encode($products),
       'errorMsg' => EB_ERROR_MESSAGE
     ]);
   }
@@ -184,6 +186,7 @@ class EbBookingForm {
   public function eb_booking_form_process() {
     try {
       $eb_booking = $_POST['eb_booking'];
+      $total = $this->eb_order_total($eb_booking['products']);
 
       $this->wpdb->insert(EB_BOOKINGS_TABLE, [
         'name' => $eb_booking['name'],
@@ -191,21 +194,61 @@ class EbBookingForm {
         'contact_number' => $eb_booking['contact_number'],
         'delivery_date' => $eb_booking['delivery_date'],
         'address' => $eb_booking['address'],
-        'products' => json_encode($eb_booking['products']),
         'additional_notes' => $eb_booking['additional_notes'],
-        'total' => $eb_booking['total']
+        'total' => $total
       ]);
 
-      $new_booking_query = "SELECT * FROM " . EB_BOOKINGS_TABLE . " WHERE id='{$this->wpdb->insert_id}'";
-      $new_booking = $this->wpdb->get_row($new_booking_query);
+      $booking_id = $this->wpdb->insert_id;
 
-      echo json_encode($new_booking);
+      foreach($eb_booking['products'] as $eb_booking_product) {
+        $this->wpdb->insert(EB_BOOKING_PRODUCTS, [
+          'booking_id' => $booking_id,
+          'product_id' => $eb_booking_product['id'],
+          'quantity' => $eb_booking_product['quantity']
+        ]);
+      }
+
+      $booking_query = "SELECT * FROM " . EB_BOOKINGS_TABLE . " WHERE id='$booking_id'";
+      $booking_products_query = "
+        SELECT name, quantity, price FROM " . EB_BOOKING_PRODUCTS . "
+          INNER JOIN " . EB_PRODUCTS_TABLE . "
+          ON " . EB_PRODUCTS_TABLE . ".id = " . EB_BOOKING_PRODUCTS . ".product_id
+          WHERE booking_id='$booking_id'
+      ";
+      $booking = $this->wpdb->get_row($booking_query);
+
+      $booking->products = $this->wpdb->get_results($booking_products_query);
+
+      echo json_encode($booking);
     }
     catch(Exception $e) {
       echo EB_ERROR_MESSAGE;
     }
 
     wp_die();
+  }
+
+  public function eb_order_total($products_ordered) {
+    $total = 0;
+    $product_ordered_ids = [];
+
+    foreach($products_ordered as $product_ordered) {
+      array_push($product_ordered_ids, $product_ordered['id']);
+    }
+
+    $product_ordered_ids = join(',', $product_ordered_ids);
+    $products_query = "SELECT id, price FROM " . EB_PRODUCTS_TABLE . " WHERE id IN ($product_ordered_ids)";
+    $products = $this->wpdb->get_results($products_query);
+
+    foreach($products as $product) {
+      foreach($products_ordered as $product_ordered) {
+        if ( $product_ordered['id'] === $product->id ) {
+          $total += $product_ordered['quantity'] * $product->price;
+        }
+      }
+    }
+
+    return $total;
   }
 
 }

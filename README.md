@@ -20,7 +20,7 @@ Version 1.0.0
 13. ~~Order summary~~
 14. ~~Form validation~~
 15. ~~Ajax loader on submit~~
-16. **Calculate total on backend**
+16. ~~Calculate total on backend~~
 17. ~~Database associations~~
 18. **Products crud**
 19. **Invalid dates crud**
