@@ -9,7 +9,8 @@ jQuery(document).ready(($) => {
     enableTime: true,
     dateFormat: 'Y-m-d H:i:S',
     altInput: true,
-    altFormat: 'F j, Y h:i K'
+    altFormat: 'F j, Y h:i K',
+    disableMobile: true
   })
 
   $(document).on('change', '.eb-product-selected', ebCalculateTotal)
