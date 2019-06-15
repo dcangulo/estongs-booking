@@ -17,17 +17,16 @@ class EbBookingForm {
   }
 
   public function eb_generate_table() {
-    $sql = "
+    $create_tables_sql[] = "
       CREATE TABLE IF NOT EXISTS `" . EB_BOOKINGS_TABLE . "` (
         `id` INT(11) NOT NULL AUTO_INCREMENT,
         `name` VARCHAR(220) DEFAULT '',
         `email_address` VARCHAR(220) DEFAULT '',
         `contact_number` VARCHAR(220) DEFAULT '',
         `delivery_date` TIMESTAMP NULL DEFAULT NULL,
-        `address` TEXT DEFAULT '',
-        `products` TEXT DEFAULT '',
-        `additional_notes` TEXT DEFAULT '',
-        `total` INT(11) DEFAULT 0,
+        `address` TEXT,
+        `additional_notes` TEXT,
+        `total` DECIMAL(13, 4) DEFAULT 0.0000,
         `payment_type` VARCHAR(220) DEFAULT '',
         `payment_reference` VARCHAR(220) DEFAULT '',
         `payment_status` INT DEFAULT 1,
@@ -35,10 +34,68 @@ class EbBookingForm {
         `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
         PRIMARY KEY (`id`)
-      ) ENGINE=InnoDB AUTO_INCREMENT=1000000 DEFAULT CHARSET=latin1;
+      ) ENGINE=InnoDB AUTO_INCREMENT=1000000 DEFAULT CHARSET={$this->wpdb->charset} COLLATE={$this->wpdb->collate};
     ";
 
-    dbDelta($sql);
+    $create_tables_sql[] = "
+      CREATE TABLE IF NOT EXISTS `" . EB_PRODUCTS_TABLE . "` (
+        `id` INT(11) NOT NULL AUTO_INCREMENT,
+        `name` VARCHAR(220) DEFAULT '',
+        `sku` VARCHAR(220) DEFAULT '',
+        `price` DECIMAL(13, 4) DEFAULT 0.0000,
+        `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+        PRIMARY KEY (`id`)
+      ) ENGINE=InnoDB DEFAULT CHARSET={$this->wpdb->charset} COLLATE={$this->wpdb->collate};
+    ";
+
+    $create_tables_sql[] = "
+      CREATE TABLE IF NOT EXISTS `" . EB_RESERVATIONS_TABLE . "` (
+        `id` INT(11) NOT NULL AUTO_INCREMENT,
+        `name` VARCHAR(220) DEFAULT '',
+        `email_address` VARCHAR(220) DEFAULT '',
+        `contact_number` VARCHAR(220) DEFAULT '',
+        `event_name` VARCHAR(220) DEFAULT '',
+        `event_location` TEXT,
+        `event_date` TIMESTAMP NULL DEFAULT NULL,
+        `additional_notes` TEXT,
+        `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+        PRIMARY KEY (`id`)
+      ) ENGINE=InnoDB DEFAULT CHARSET={$this->wpdb->charset} COLLATE={$this->wpdb->collate};
+    ";
+
+    $create_tables_sql[] = "
+      CREATE TABLE IF NOT EXISTS `" . EB_BOOKING_PRODUCTS . "` (
+        `id` INT(11) NOT NULL AUTO_INCREMENT,
+        `booking_id` int(11) NOT NULL,
+        `product_id` int(11) NOT NULL,
+        `quantity` INT(11) DEFAULT 0,
+        `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+        PRIMARY KEY (`id`)
+      ) ENGINE=InnoDB DEFAULT CHARSET={$this->wpdb->charset} COLLATE={$this->wpdb->collate};
+    ";
+
+    $create_associations_sql = "
+      ALTER TABLE `" . EB_BOOKING_PRODUCTS . "`
+        ADD KEY `" . EB_BOOKING_PRODUCTS . "_booking_id_foreign` (`booking_id`),
+        ADD KEY `" . EB_BOOKING_PRODUCTS . "_product_id_foreign` (`product_id`),
+        ADD CONSTRAINT `" . EB_BOOKING_PRODUCTS . "_booking_id_foreign`
+          FOREIGN KEY (`booking_id`) REFERENCES `" . EB_BOOKINGS_TABLE . "` (`id`)
+          ON DELETE CASCADE
+          ON UPDATE CASCADE,
+        ADD CONSTRAINT `" . EB_BOOKING_PRODUCTS . "_product_id_foreign`
+          FOREIGN KEY (`product_id`) REFERENCES `" . EB_PRODUCTS_TABLE . "` (`id`)
+          ON DELETE CASCADE
+          ON UPDATE CASCADE;
+    ";
+
+    foreach($create_tables_sql as $create_table_sql) {
+      dbDelta($create_table_sql);
+    }
+
+    $this->wpdb->query($create_associations_sql);
   }
 
   public function eb_booking_form_content() {
