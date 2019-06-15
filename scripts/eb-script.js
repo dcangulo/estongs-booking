@@ -1,6 +1,7 @@
 jQuery(document).ready(($) => {
   const products = JSON.parse(ebBookingParams.products),
-        validDate = new Date().fp_incr(0)
+        options = JSON.parse(ebBookingParams.options),
+        validDate = new Date().fp_incr(options.preparation_days || 0)
 
   let selectedProducts = [],
       selectedTotal = 0,
@@ -13,7 +14,10 @@ jQuery(document).ready(($) => {
     altInput: true,
     altFormat: 'F j, Y h:i K',
     disableMobile: true,
-    minDate: validDate
+    minDate: validDate,
+    disable: options.disabled_dates,
+    minTime: options.start_time || '0:00',
+    maxTime: options.end_time || '23:00',
   })
 
   $(document).on('change', '.eb-product-selected', ebCalculateTotal)

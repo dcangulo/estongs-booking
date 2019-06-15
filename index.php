@@ -18,7 +18,9 @@ require_once('classes/eb_booking_admin_table.php');
 require_once('classes/eb_booking_admin.php');
 require_once('classes/eb_booking_products_table.php');
 require_once('classes/eb_booking_products.php');
+require_once('classes/eb_booking_settings.php');
 
 new EbBookingForm();
 new EbBookingAdmin();
 new EbBookingProducts();
+new EbBookingSettings();
