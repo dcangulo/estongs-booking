@@ -18,7 +18,7 @@ Version 1.0.0
 11. **Calendar View**
 12. ~~Callback design~~
 13. ~~Order summary~~
-14. **Form validation**
+14. ~~Form validation~~
 15. **Ajax loader on submit**
 16. **Calculate total on backend**
 17. **Database associations**

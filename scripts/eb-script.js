@@ -260,8 +260,6 @@ jQuery(document).ready(($) => {
       isValid = false
     }
 
-    console.log(formObject)
-
     return isValid
   }
 })
