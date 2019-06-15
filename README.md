@@ -25,8 +25,9 @@ Version 1.0.0
 18. **Products crud**
 19. **Invalid dates crud**
 20. **Reservations crud**
-21. **Paypal (branch)**
-22. **Cart (branch)**
+21. **Settings start date**
+22. **Paypal (branch)**
+23. **Cart (branch)**
 
 ## License
 Copyright © 2019 David Angulo, released under the MIT license, see [LICENSE](LICENSE).

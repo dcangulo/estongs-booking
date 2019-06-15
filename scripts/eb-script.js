@@ -1,5 +1,7 @@
 jQuery(document).ready(($) => {
-  const products = JSON.parse(ebBookingParams.products)
+  const products = JSON.parse(ebBookingParams.products),
+        validDate = new Date().fp_incr(0)
+
   let selectedProducts = [],
       selectedTotal = 0,
       productIndex = 0
@@ -10,7 +12,8 @@ jQuery(document).ready(($) => {
     dateFormat: 'Y-m-d H:i:S',
     altInput: true,
     altFormat: 'F j, Y h:i K',
-    disableMobile: true
+    disableMobile: true,
+    minDate: validDate
   })
 
   $(document).on('change', '.eb-product-selected', ebCalculateTotal)
@@ -245,7 +248,7 @@ jQuery(document).ready(($) => {
       $('.eb-form-contact-number').addClass('eb-required-field')
       isValid = false
     }
-    if ( !formObject.delivery_date ) {
+    if ( !formObject.delivery_date || !(validDate < new Date(formObject.delivery_date)) ) {
       $('.eb-form-delivery-date').addClass('eb-required-field')
       isValid = false
     }
