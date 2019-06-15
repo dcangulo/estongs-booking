@@ -162,12 +162,6 @@ class EbBookingForm {
 
   public function eb_booking_form_scripts() {
     $products = $this->wpdb->get_results('SELECT * FROM ' . EB_PRODUCTS_TABLE);
-    $options = [
-      'preparation_days' => get_option('eb-preparation-days'),
-      'disabled_dates' => explode(', ', get_option('eb-disabled-dates')),
-      'start_time' => get_option('eb-start-time'),
-      'end_time' => get_option('eb-end-time')
-    ];
 
     wp_register_style('eb-booking-form-style', EB_PLUGIN_ROOT_URL . '/scripts/eb-style.css');
     wp_enqueue_style('eb-booking-form-style');
@@ -176,7 +170,7 @@ class EbBookingForm {
     wp_localize_script('eb-booking-form-script', 'ebBookingParams', [
       'adminAjaxUrl' => admin_url('admin-ajax.php'),
       'products' => json_encode($products),
-      'options' => json_encode($options),
+      'options' => json_encode(EB_BOOKING_SETTINGS),
       'errorMsg' => EB_ERROR_MESSAGE
     ]);
   }

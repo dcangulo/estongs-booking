@@ -4,7 +4,6 @@ class EbBookingSettings {
   public function __construct() {
     add_action('admin_menu', [$this, 'eb_settings_menu']);
     add_action('admin_init', [$this, 'eb_register_settings']);
-    add_action('admin_enqueue_scripts', [$this, 'eb_admin_scripts']);
     add_action('admin_enqueue_scripts', [$this, 'eb_admin_dependencies']);
   }
 
@@ -57,11 +56,6 @@ class EbBookingSettings {
       </form>
     </div>
   <?php
-  }
-
-  public function eb_admin_scripts() {
-    wp_register_script('eb-admin-script', EB_PLUGIN_ROOT_URL . '/scripts/eb-admin-script.js');
-    wp_enqueue_script('eb-admin-script');
   }
 
   public function eb_admin_dependencies() {

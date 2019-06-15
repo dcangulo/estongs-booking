@@ -16,8 +16,8 @@ jQuery(document).ready(($) => {
     disableMobile: true,
     minDate: validDate,
     disable: options.disabled_dates,
-    minTime: options.start_time || '0:00',
-    maxTime: options.end_time || '23:00',
+    minTime: options.start_time,
+    maxTime: options.end_time
   })
 
   $(document).on('change', '.eb-product-selected', ebCalculateTotal)
