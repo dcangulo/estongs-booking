@@ -45,6 +45,17 @@
   clear: both;
 }
 
+.eb-required-indication {
+  color: #ff0028 !important;
+  font-size: 22px !important;
+  margin-left: 5px;
+  font-weight: bold;
+}
+
+.eb-required-field {
+  border: 1px solid #ff0028 !important;
+}
+
 .flatpickr-calendar input[type='number'] {
   all: unset !important;
   width: 50px !important;

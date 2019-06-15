@@ -48,27 +48,27 @@ class EbBookingForm {
     <form id='eb-booking-form'>
       <div class='row'>
         <div class='col-md-6'>
-          <label for='name'>Name:</label>
-          <input type='text' id='name' name='name'>
+          <label for='name'>Name:<span class='eb-required-indication'>*</span></label>
+          <input type='text' id='name' name='name' class='eb-form-name eb-required'>
         </div>
         <div class='col-md-6'>
-          <label for='email-address'>Email Address:</label>
-          <input type='text' id='email-address' name='email-address'>
+          <label for='email-address'>Email Address:<span class='eb-required-indication'>*</span></label>
+          <input type='text' id='email-address' name='email-address' class='eb-form-email-address eb-required'>
         </div>
         <div class='col-md-6'>
-          <label for='contact-number'>Contact Number:</label>
-          <input type='text' id='contact-number' name='contact-number'>
+          <label for='contact-number'>Contact Number:<span class='eb-required-indication'>*</span></label>
+          <input type='text' id='contact-number' name='contact-number' class='eb-form-contact-number eb-required'>
         </div>
         <div class='col-md-6'>
-          <label for='delivery-date'>Delivery Date:</label>
-          <input type='text' id='delivery-date' name='delivery-date' class='eb-datetime-picker'>
+          <label for='delivery-date'>Delivery Date:<span class='eb-required-indication'>*</span></label>
+          <input type='text' id='delivery-date' name='delivery-date' class='eb-datetime-picker eb-form-delivery-date eb-required'>
         </div>
         <div class='col-md-12'>
-          <label for='address'>Address:</label>
-          <textarea id='address' name='address'></textarea>
+          <label for='address'>Address:<span class='eb-required-indication'>*</span></label>
+          <textarea id='address' name='address' class='eb-form-address eb-required'></textarea>
         </div>
         <div class='col-md-12'>
-          <label>Products:</label>
+          <label>Products:<span class='eb-required-indication'>*</span></label>
           <div id='eb-products'>
           </div>
           <div class='row'>

@@ -40,6 +40,8 @@ jQuery(document).ready(($) => {
     ebBookingObject.products = selectedProducts
     ebBookingObject.total = selectedTotal
 
+    if ( !ebIsFormValid(ebBookingObject) ) return
+
     const params = {
       action: 'eb_booking_form_process',
       eb_booking: ebBookingObject
@@ -148,18 +150,18 @@ jQuery(document).ready(($) => {
     const template = `
       <div id='eb-product-row-${productIndex}' class='row eb-selected-row'>
         <div class='col-md-5'>
-          <select class='eb-product-selected'>
+          <select class='eb-product-selected eb-required'>
             ${options}
           </select>
         </div>
         <div class='col-md-3'>
-          <select class='eb-product-type'>
+          <select class='eb-product-type eb-required'>
             <option value='regular'>Regular</option>
             <option value='spicy'>Spicy</option>
           </select>
         </div>
         <div class='col-md-3'>
-          <input type='number' class='eb-product-quantity' placeholder='Quantity'>
+          <input type='number' class='eb-product-quantity eb-required' placeholder='Quantity'>
         </div>
         <div class='col-md-1'>
           <span class='eb-icon-container' index='${productIndex}'>
@@ -209,8 +211,57 @@ jQuery(document).ready(($) => {
       selectedTotal += productTotal
     }
 
-    selectedTotal = selectedTotal.toFixed(2)
+    selectedTotal = parseFloat(selectedTotal.toFixed(2))
 
     return selectedTotal
+  }
+
+  function ebIsFormValid(formObject) {
+    let isValid = true,
+        emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+
+    $('.eb-form-name').removeClass('eb-required-field')
+    $('.eb-form-email-address').removeClass('eb-required-field')
+    $('.eb-form-contact-number').removeClass('eb-required-field')
+    $('.eb-form-delivery-date').removeClass('eb-required-field')
+    $('.eb-form-address').removeClass('eb-required-field')
+    $('.eb-product-selected').removeClass('eb-required-field')
+    $('.eb-product-type').removeClass('eb-required-field')
+    $('.eb-product-quantity').removeClass('eb-required-field')
+
+    if ( !formObject.name ) {
+      $('.eb-form-name').addClass('eb-required-field')
+      isValid = false
+    }
+    if ( !emailRegex.test(formObject.email_address) ) {
+      $('.eb-form-email-address').addClass('eb-required-field')
+      isValid = false
+    }
+    if ( !formObject.contact_number ) {
+      $('.eb-form-contact-number').addClass('eb-required-field')
+      isValid = false
+    }
+    if ( !formObject.delivery_date ) {
+      $('.eb-form-delivery-date').addClass('eb-required-field')
+      isValid = false
+    }
+    if ( !formObject.address ) {
+      $('.eb-form-address').addClass('eb-required-field')
+      isValid = false
+    }
+    if ( !formObject.products.length ) {
+      $('.eb-product-selected').addClass('eb-required-field')
+      $('.eb-product-type').addClass('eb-required-field')
+      $('.eb-product-quantity').addClass('eb-required-field')
+      isValid = false
+    }
+    if ( !formObject.total ) {
+      alert('Please select atleast one (1) product')
+      isValid = false
+    }
+
+    console.log(formObject)
+
+    return isValid
   }
 })
