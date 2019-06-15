@@ -56,8 +56,16 @@ class EbBookingAdmin {
 
   public function eb_booking_admin_show($booking_id) {
     $booking_query = "SELECT * FROM " . EB_BOOKINGS_TABLE . " WHERE id='$booking_id'";
+    $booking_products_query = "
+      SELECT name, quantity FROM " . EB_BOOKING_PRODUCTS . "
+        INNER JOIN " . EB_PRODUCTS_TABLE . "
+        ON " . EB_PRODUCTS_TABLE . ".id = " . EB_BOOKING_PRODUCTS . ".product_id
+        WHERE booking_id='$booking_id'
+    ";
     $booking = $this->wpdb->get_row($booking_query);
     $delete_nonce = wp_create_nonce('eb_delete_booking');
+
+    $booking->products = $this->wpdb->get_results($booking_products_query);
   ?>
     <div class='wrap'>
       <h1 class='wp-heading-inline'>Booking #<?php echo $booking_id; ?></h1>
@@ -94,19 +102,23 @@ class EbBookingAdmin {
               <thead>
                 <tr>
                   <th>Name</th>
-                  <th>Type</th>
                   <th>Quantity</th>
                 </tr>
               </thead>
               <tbody>
-
+                <?php foreach($booking->products as $product) {?>
+                  <tr>
+                    <td><?php echo $product->name; ?></td>
+                    <td><?php echo $product->quantity; ?></td>
+                  </tr>
+                <?php } ?>
               </tbody>
             </table>
           </td>
         </tr>
         <tr>
           <th scope='row'>Total</th>
-          <td>₱<?php echo $booking->total; ?>.00</td>
+          <td>₱<?php echo number_format($booking->total, 2); ?></td>
         </tr>
         <tr>
           <th scope='row'>Additional Notes</th>
@@ -139,7 +151,15 @@ class EbBookingAdmin {
     }
 
     $booking_query = "SELECT * FROM " . EB_BOOKINGS_TABLE . " WHERE id='$booking_id'";
+    $booking_products_query = "
+      SELECT name, quantity FROM " . EB_BOOKING_PRODUCTS . "
+        INNER JOIN " . EB_PRODUCTS_TABLE . "
+        ON " . EB_PRODUCTS_TABLE . ".id = " . EB_BOOKING_PRODUCTS . ".product_id
+        WHERE booking_id='$booking_id'
+    ";
     $booking = $this->wpdb->get_row($booking_query);
+
+    $booking->products = $this->wpdb->get_results($booking_products_query);
   ?>
     <div class='wrap'>
       <h1 class='wp-heading-inline'>Editing Booking #<?php echo $booking_id; ?></h1>
@@ -169,45 +189,29 @@ class EbBookingAdmin {
             <td><?php echo $booking->address; ?></td>
           </tr>
           <tr>
-            <th scope='row'>Products</th>
+          <th scope='row'>Products</th>
             <td>
               <table>
                 <thead>
                   <tr>
                     <th>Name</th>
-                    <th>Type</th>
                     <th>Quantity</th>
                   </tr>
                 </thead>
                 <tbody>
-                <?php
-                  foreach(json_decode($booking->products) as $product) {
-                ?>
+                  <?php foreach($booking->products as $product) {?>
                     <tr>
-                      <td>
-                        <?php
-                          $selected_product_name = '';
-
-                          foreach(EB_PRODUCTS as $eb_product) {
-                            if ( $eb_product['sku'] === $product->sku ) {
-                              $selected_product_name = $eb_product['name'];
-                              break;
-                            }
-                          }
-
-                          echo $selected_product_name;
-                        ?>
-                      <td><?php echo $product->type; ?></td>
+                      <td><?php echo $product->name; ?></td>
                       <td><?php echo $product->quantity; ?></td>
                     </tr>
-                <?php } ?>
+                  <?php } ?>
                 </tbody>
               </table>
             </td>
           </tr>
           <tr>
             <th scope='row'>Total</th>
-            <td>₱<?php echo $booking->total; ?>.00</td>
+            <td>₱<?php echo number_format($booking->total, 2); ?></td>
           </tr>
           <tr>
             <th scope='row'>Additional Notes</th>
