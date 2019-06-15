@@ -32,3 +32,6 @@ define('EB_BOOKING_STATUSES', [
   '1' => 'PROCESSING',
   '2' => 'DELIVERED'
 ]);
+define('EB_BOOKINGS_TABLE', $wpdb->prefix . 'eb_bookings');
+define('EB_PRODUCTS_TABLE', $wpdb->prefix . 'eb_products');
+define('EB_RESERVATIONS_TABLE', $wpdb->prefix . 'eb_reservations');

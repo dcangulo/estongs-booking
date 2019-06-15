@@ -2,14 +2,12 @@
 class EbBookingAdmin {
 
   private $wpdb;
-  private $table_name;
   private $bookings;
 
   public function __construct() {
     global $wpdb;
 
     $this->wpdb = $wpdb;
-    $this->table_name = $wpdb->prefix . 'eb_bookings';
 
     add_filter('set-screen-option', [__CLASS__, 'eb_set_screen'], 10, 3);
     add_action('admin_menu', [$this, 'eb_booking_menu']);
@@ -63,7 +61,7 @@ class EbBookingAdmin {
   }
 
   public function eb_booking_admin_show($booking_id) {
-    $booking_query = "SELECT * FROM $this->table_name WHERE id='$booking_id'";
+    $booking_query = "SELECT * FROM " . EB_BOOKINGS_TABLE . " WHERE id='$booking_id'";
     $booking = $this->wpdb->get_row($booking_query);
     $delete_nonce = wp_create_nonce('eb_delete_booking');
   ?>
@@ -166,7 +164,7 @@ class EbBookingAdmin {
       $this->eb_booking_admin_update($_POST, $booking_id);
     }
 
-    $booking_query = "SELECT * FROM $this->table_name WHERE id='$booking_id'";
+    $booking_query = "SELECT * FROM " . EB_BOOKINGS_TABLE . " WHERE id='$booking_id'";
     $booking = $this->wpdb->get_row($booking_query);
     $delete_nonce = wp_create_nonce('eb_delete_booking');
   ?>
@@ -288,7 +286,7 @@ class EbBookingAdmin {
   }
 
   public function eb_booking_admin_update($params, $booking_id) {
-    $this->wpdb->update($this->table_name, [
+    $this->wpdb->update(EB_BOOKINGS_TABLE, [
       'payment_status' => esc_sql($params['eb-payment-status']),
       'booking_status' => esc_sql($params['eb-booking-status'])
     ], ['id' => $booking_id]);

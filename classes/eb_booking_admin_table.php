@@ -2,7 +2,6 @@
 class EbBookingAdminTable extends WP_List_Table {
 
   private static $wpdb;
-  private static $table_name;
 
   public function __construct() {
     parent::__construct([
@@ -14,11 +13,10 @@ class EbBookingAdminTable extends WP_List_Table {
     global $wpdb;
 
     self::$wpdb = $wpdb;
-    self::$table_name = self::$wpdb->prefix . 'eb_bookings';
   }
 
   public static function get_bookings($per_page = EB_PER_PAGE_DEFAULT, $page_number = 1) {
-    $sql = 'SELECT * FROM ' . self::$table_name;
+    $sql = 'SELECT * FROM ' . EB_BOOKINGS_TABLE;
 
     if ( !empty($_REQUEST['orderby']) ) {
       $sql .= ' ORDER BY ' . esc_sql($_REQUEST['orderby']);
@@ -33,11 +31,11 @@ class EbBookingAdminTable extends WP_List_Table {
   }
 
   public static function delete_booking($id) {
-    self::$wpdb->delete(self::$table_name, ['id' => $id]);
+    self::$wpdb->delete(EB_BOOKINGS_TABLE, ['id' => $id]);
   }
 
   public static function record_count() {
-    $sql = 'SELECT COUNT(*) FROM ' . self::$table_name;
+    $sql = 'SELECT COUNT(*) FROM ' . EB_BOOKINGS_TABLE;
 
     return self::$wpdb->get_var($sql);
   }

@@ -2,13 +2,11 @@
 class EbBookingForm {
 
   private $wpdb;
-  private $table_name;
 
   public function __construct() {
     global $wpdb;
 
     $this->wpdb = $wpdb;
-    $this->table_name = $wpdb->prefix . 'eb_bookings';
 
     register_activation_hook(EB_PLUGIN_INDEX_PATH, [$this, 'eb_generate_table']);
     add_shortcode('eb_booking_form', [$this, 'eb_booking_form_render']);
@@ -20,7 +18,7 @@ class EbBookingForm {
 
   public function eb_generate_table() {
     $sql = "
-      CREATE TABLE IF NOT EXISTS `$this->table_name` (
+      CREATE TABLE IF NOT EXISTS `" . EB_BOOKINGS_TABLE . "` (
         `id` INT(11) NOT NULL AUTO_INCREMENT,
         `name` VARCHAR(220) DEFAULT '',
         `email_address` VARCHAR(220) DEFAULT '',
@@ -130,7 +128,7 @@ class EbBookingForm {
     try {
       $eb_booking = $_POST['eb_booking'];
 
-      $this->wpdb->insert($this->table_name, [
+      $this->wpdb->insert(EB_BOOKINGS_TABLE, [
         'name' => $eb_booking['name'],
         'email_address' => $eb_booking['email_address'],
         'contact_number' => $eb_booking['contact_number'],
@@ -141,7 +139,7 @@ class EbBookingForm {
         'total' => $eb_booking['total']
       ]);
 
-      $new_booking_query = "SELECT * FROM $this->table_name WHERE id='{$this->wpdb->insert_id}'";
+      $new_booking_query = "SELECT * FROM " . EB_BOOKINGS_TABLE . " WHERE id='{$this->wpdb->insert_id}'";
       $new_booking = $this->wpdb->get_row($new_booking_query);
 
       echo json_encode($new_booking);
