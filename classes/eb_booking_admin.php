@@ -23,6 +23,9 @@ class EbBookingAdmin {
       'Bookings',
       'manage_options',
       'eb_booking_list',
+      '',
+      'dashicons-calendar-alt',
+      4,
       [$this, 'eb_booking_admin_page']
     );
 
