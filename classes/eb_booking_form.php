@@ -142,6 +142,10 @@ class EbBookingForm {
           <textarea id='additional-notes' name='additional-notes'></textarea>
         </div>
         <div class='col-md-12'>
+          <label for='captcha'>Please prove that you are human by solving the equation (<span id='captcha-equation'></span>)<span class='eb-required-indication'>*</span></label>
+          <input type='number' id='captcha' name='captcha' class='eb-form-captcha eb-required'>
+        </div>
+        <div class='col-md-12'>
           <button type='submit' class='eb-button' name='place-order'>Place Order</button>
         </div>
       </div>

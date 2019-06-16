@@ -5,7 +5,7 @@ A WordPress plugin for Estong's Bellychon booking
 Version 1.0.0
 
 ## TODO
-1. **Add CAPTCHA**
+1. ~~Add CAPTCHA~~
 2. ~~Make form responsive~~
 3. ~~Improve form design~~
 4. ~~Form success callback~~

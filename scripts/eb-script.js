@@ -1,11 +1,16 @@
 jQuery(document).ready(($) => {
   const products = JSON.parse(ebBookingParams.products),
         options = JSON.parse(ebBookingParams.options),
-        validDate = new Date().fp_incr(options.preparation_days || 0)
+        validDate = new Date().fp_incr(options.preparation_days || 0),
+        biggerNum = Math.floor((Math.random() * 10) + 5),
+        smallerNum = Math.floor((Math.random() * 5) + 1),
+        captchaAnswer = biggerNum + smallerNum
 
   let selectedProducts = [],
       selectedTotal = 0,
       productIndex = 0
+
+  $('#captcha-equation').text(`${biggerNum} + ${smallerNum} = ?`)
 
   ebAddProduct()
   flatpickr('.eb-datetime-picker', {
@@ -257,6 +262,7 @@ jQuery(document).ready(($) => {
     $('.eb-product-selected').removeClass('eb-required-field')
     $('.eb-product-type').removeClass('eb-required-field')
     $('.eb-product-quantity').removeClass('eb-required-field')
+    $('.eb-form-captcha').removeClass('eb-required-field')
 
     if ( !formObject.name ) {
       $('.eb-form-name').addClass('eb-required-field')
@@ -286,6 +292,10 @@ jQuery(document).ready(($) => {
     }
     if ( !formObject.total ) {
       alert('Please select atleast one (1) product')
+      isValid = false
+    }
+    if ( formObject.captcha != captchaAnswer ) {
+      $('.eb-form-captcha').addClass('eb-required-field')
       isValid = false
     }
 
