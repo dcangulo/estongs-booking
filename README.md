@@ -14,7 +14,7 @@ Version 1.0.0
 7. ~~Compute price in form~~
 8. **Add payment shorcode**
 9. ~~Fix enum statuses~~
-10. **Email Notifications**
+10. ~~Email Notifications~~
 11. ~~Calendar View~~
 12. ~~Callback design~~
 13. ~~Order summary~~

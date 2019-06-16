@@ -220,6 +220,8 @@ class EbBookingForm {
 
       $booking->products = $this->wpdb->get_results($booking_products_query);
 
+      $this->eb_send_email($booking);
+
       echo json_encode($booking);
     }
     catch(Exception $e) {
@@ -227,6 +229,154 @@ class EbBookingForm {
     }
 
     wp_die();
+  }
+
+  public function eb_send_email($booking) {
+    $to = $booking->email_address;
+    $subject = "Your order {$booking->id} has been received";
+    $message = "
+      <html>
+        <head>
+        </head>
+        <body>
+          <div bgcolor='#f8f8f8' marginwidth='0' marginheight='0' style='margin:0;padding:0;background:#f8f8f8'>
+            <table cellpadding='0' cellspacing='0' border='0' height='100%' width='100%' bgcolor='#f8f8f8' style='background:#f8f8f8'>
+              <tbody>
+                <tr>
+                  <td>
+                    <table border='0' width='600' cellpadding='0' cellspacing='0' align='center'>
+                      <tbody>
+                        <tr>
+                          <td valign='middle' style='text-align:left'>
+                            <a href='#' target='_blank'><img src='https://www.davidangulo.xyz/estongs-staging/wp-content/uploads/2019/05/logo.png' height='119' width='236' border='0'></a>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                    <table border='0' width='600' cellpadding='0' cellspacing='0' align='center' style='background:#ffffff;border:1px solid #e5e5e5'>
+                      <tbody>
+                        <tr>
+                          <td style='border-bottom:1px solid #e5e5e5'>
+                            <table border='0' width='100%' cellpadding='0' cellspacing='0' align='center'>
+                              <tbody>
+                                <tr>
+                                  <td style='padding:30px 30px 00px 30px;font-family:sans-serif;font-size:16px;line-height:25px;color:#666666'>
+                                    <table cellpadding='10' style='width:100%'>
+                                      <tbody>
+                                        <tr>
+                                          <td colspan='2'>
+                                            <h2 style='margin-bottom:20px'>Your order has been received</h2>
+                                            <div style='font-size:20px; margin-bottom: 10px;'>
+                                              Dear {$booking->name},
+                                            </div>
+                                            <div style='font-size: 16px'>
+                                              Thanks for shopping with us! We are glad to inform you that your order #{$booking->id} has been received successfully, please see below details for more information regarding your order.
+                                            </div>
+                                          </td>
+                                        </tr>
+                                        <tr>
+                                          <td colspan='2'>
+                                            <h2 style='margin:0'>Summary of your order</h2>
+                                          </td>
+                                        </tr>
+                                        <tr style='border-bottom:1px solid #eee'>
+                                          <td style='text-transform: uppercase;'>Order Number</td>
+                                          <td style='float:right'>{$booking->id}</td>
+                                        </tr>
+                                        <tr style='border-bottom:1px solid #eee'>
+                                          <td style='text-transform: uppercase;'>Name</td>
+                                          <td style='float:right'>{$booking->name}</td>
+                                        </tr>
+                                        <tr style='border-bottom:1px solid #eee'>
+                                          <td style='text-transform: uppercase;'>Email Address</td>
+                                          <td style='float:right'>{$booking->email_address}</td>
+                                        </tr>
+                                        <tr style='border-bottom:1px solid #eee'>
+                                          <td style='text-transform: uppercase;'>Contact Number</td>
+                                          <td style='float:right'>{$booking->contact_number}</td>
+                                        </tr>
+                                        <tr style='border-bottom:1px solid #eee'>
+                                          <td style='text-transform: uppercase;'>Address</td>
+                                          <td style='float:right'>{$booking->address}</td>
+                                        </tr>
+                                        <tr style='border-bottom:1px solid #eee'>
+                                          <td style='text-transform: uppercase;'>Delivery Date</td>
+                                          <td style='float:right'>" . date('F j, Y g:i A', strtotime($booking->delivery_date)) . "</td>
+                                        </tr>
+                                        <tr style='border-bottom:1px solid #eee'>
+                                          <td style='text-transform: uppercase;'>Total</td>
+                                          <td style='float:right'>₱" . number_format($booking->total, 2) . "</td>
+                                        </tr>
+                                        <tr>
+                                          <td colspan='2'>
+                                            <h2 style='margin:0'>Summary of products ordered</h2>
+                                          </td>
+                                        </tr>
+                                        <tr style='border-bottom:1px solid #eee'>
+                                          <td style='text-transform: uppercase;'>Product</td>
+                                          <td style='float:right;text-transform: uppercase;'>Total</td>
+                                        </tr>
+    ";
+
+    foreach($booking->products as $product) {
+      $total = (float)$product->price * (float)$product->quantity;
+
+      $message .= "
+        <tr style='border-bottom:1px solid #eee'>
+          <td width='70%'>{$product->name} x {$product->quantity}</td>
+          <td style='float:right' widht='30%'>₱" . number_format($total, 2) . "</td>
+        </tr>
+      ";
+    }
+
+    $message .= "
+                                        <tr style='border-bottom:1px solid #eee'>
+                                          <td style='text-transform: uppercase;'>Total</td>
+                                          <td style='float:right'>₱" . number_format($booking->total, 2) . "</td>
+                                        </tr>
+                                        <tr style='border-bottom:1px solid #eee'>
+                                          <td style='text-transform: uppercase;'>Additional Notes</td>
+                                          <td style='float:right'>{$booking->additional_notes}</td>
+                                        </tr>
+                                       <tr style='border-bottom:1px solid #eee'>
+                                         <td colspan='2' style='text-align: center;'><a href='#' style='background: #ff0028; color: #fff; text-decoration: none; padding: 10px 20px 10px 20px; border-radius: 5px;'>PAY NOW</a></td>
+                                       </tr>
+                                      </tbody>
+                                    </table>
+                                  </td>
+                                </tr>
+                                <tr>
+                                  <td style='padding-left:37px;padding-bottom:20px;margin-top:0px;font-family:sans-serif;color:#666666'>
+                                  </td>
+                                </tr>
+                              </tbody>
+                            </table>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                    <table border='0' width='100%' cellpadding='0' cellspacing='0' align='center'>
+                      <tbody>
+                        <tr>
+                          <td style='text-align:center;padding:30px;font-family:Helvetica,Arial,sans-serif;font-size:13px;line-height:28px;color:#888888'>
+                            © 2019 Estong's Bellychon
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </body>
+      </html>
+    ";
+
+    $headers = "MIME-Version: 1.0" . "\r\n";
+    $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
+
+    wp_mail($to, $subject, $message, $headers);
   }
 
   public function eb_order_total($products_ordered) {
