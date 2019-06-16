@@ -1,5 +1,5 @@
 <?php
-define('EB_PER_PAGE_DEFAULT', 5);
+define('EB_PER_PAGE_DEFAULT', 10);
 define('EB_PLUGIN_ROOT_URL', plugins_url('estongs-booking'));
 define('EB_PLUGIN_INDEX_PATH', join('/', [WP_PLUGIN_DIR, 'estongs-booking', 'index.php']));
 define('EB_ERROR_MESSAGE', 'An error has occured.');
