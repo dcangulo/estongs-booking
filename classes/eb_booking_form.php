@@ -138,7 +138,7 @@ class EbBookingForm {
           </div>
         </div>
         <div class='col-md-12'>
-          <label for='additional-notes'>Addtional Notes:</label>
+          <label for='additional-notes'>Additional Notes:</label>
           <textarea id='additional-notes' name='additional-notes'></textarea>
         </div>
         <div class='col-md-12'>
