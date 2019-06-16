@@ -27,6 +27,7 @@ class EbBookingForm {
         `address` TEXT,
         `additional_notes` TEXT,
         `total` DECIMAL(13, 4) DEFAULT 0.0000,
+        `token` VARCHAR(220) DEFAULT '',
         `payment_type` VARCHAR(220) DEFAULT '',
         `payment_reference` VARCHAR(220) DEFAULT '',
         `payment_status` INT DEFAULT 1,
@@ -200,7 +201,8 @@ class EbBookingForm {
         'delivery_date' => $eb_booking['delivery_date'],
         'address' => $eb_booking['address'],
         'additional_notes' => $eb_booking['additional_notes'],
-        'total' => $total
+        'total' => $total,
+        'token' => wp_generate_uuid4() . '-' . rand(1000, 9999)
       ]);
 
       $booking_id = $this->wpdb->insert_id;
@@ -236,6 +238,10 @@ class EbBookingForm {
   }
 
   public function eb_send_email($booking) {
+    $payment_url = add_query_arg([
+      'order_number' => $booking->id,
+      'token' => $booking->token
+    ], home_url('payment'));
     $to = $booking->email_address;
     $subject = "Your order {$booking->id} has been received";
     $message = "
@@ -343,7 +349,7 @@ class EbBookingForm {
                                           <td style='float:right'>{$booking->additional_notes}</td>
                                         </tr>
                                        <tr style='border-bottom:1px solid #eee'>
-                                         <td colspan='2' style='text-align: center;'><a href='#' style='background: #ff0028; color: #fff; text-decoration: none; padding: 10px 20px 10px 20px; border-radius: 5px;'>PAY NOW</a></td>
+                                         <td colspan='2' style='text-align: center;'><a href='$payment_url' style='background: #ff0028; color: #fff; text-decoration: none; padding: 10px 20px 10px 20px; border-radius: 5px;'>PAY NOW</a></td>
                                        </tr>
                                       </tbody>
                                     </table>

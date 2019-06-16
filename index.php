@@ -20,9 +20,11 @@ require_once('classes/eb_booking_calendar.php');
 require_once('classes/eb_booking_products_table.php');
 require_once('classes/eb_booking_products.php');
 require_once('classes/eb_booking_settings.php');
+require_once('classes/eb_booking_payment_form.php');
 
 new EbBookingForm();
 new EbBookingAdmin();
 new EbBookingCalendar();
 new EbBookingProducts();
 new EbBookingSettings();
+new EbBookingPaymentForm();

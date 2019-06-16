@@ -38,6 +38,43 @@ jQuery(document).ready(($) => {
     ebCalculateTotal()
   })
 
+  $('#eb-booking-payment-form').submit((event) => {
+    event.preventDefault()
+
+    let ebBookingPaymentObject = {},
+        searchParams = (new URL(location.href)).searchParams
+
+    $('#eb-booking-payment-form').serializeArray().forEach((field) => {
+      const name = field.name.replace(/-/g, '_')
+
+      ebBookingPaymentObject[name] = field.value
+    })
+
+    ebBookingPaymentObject.order_number = searchParams.get('order_number')
+    ebBookingPaymentObject.token = searchParams.get('token')
+
+    if ( !isEbPaymentFormValid(ebBookingPaymentObject) ) return
+
+    const params = {
+      action: 'eb_payment_form_process',
+      eb_booking_payment: ebBookingPaymentObject
+    }
+
+    ebToggleOverlayLoader()
+
+    $.ajax({
+      type: 'post',
+      url: ebBookingParams.adminAjaxUrl,
+      data: params,
+      success: (response) => {
+        $('#eb-booking-payment-form').hide()
+        $('#eb-success h3').text(response)
+        $('#eb-success').show()
+        ebToggleOverlayLoader(false)
+      }
+    })
+  })
+
   $('#eb-booking-form').submit((event) => {
     event.preventDefault()
 
@@ -296,6 +333,29 @@ jQuery(document).ready(($) => {
     }
     if ( formObject.captcha != captchaAnswer ) {
       $('.eb-form-captcha').addClass('eb-required-field')
+      isValid = false
+    }
+
+    return isValid
+  }
+
+  function isEbPaymentFormValid(formObject) {
+    let isValid = true
+
+    $('.eb-form-amount').removeClass('eb-required-field')
+    $('.eb-form-type').removeClass('eb-required-field')
+    $('.eb-form-reference').removeClass('eb-required-field')
+
+    if ( !formObject.amount ) {
+      $('.eb-form-amount').addClass('eb-required-field')
+      isValid = false
+    }
+    if ( !formObject.type ) {
+      $('.eb-form-type').addClass('eb-required-field')
+      isValid = false
+    }
+    if ( !formObject.reference ) {
+      $('.eb-form-reference').addClass('eb-required-field')
       isValid = false
     }
 

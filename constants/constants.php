@@ -16,7 +16,8 @@ define('EB_BOOKING_SETTINGS', [
 define('EB_PAYMENT_STATUSES', [
   '1' => 'AWAITING PAYMENT',
   '2' => 'VALIDATING PAYMENT',
-  '3' => 'PAID'
+  '3' => 'VERIFIED PAYMENT',
+  '4' => 'CASH ON DELIVERY'
 ]);
 define('EB_BOOKING_STATUSES', [
   '1' => 'PROCESSING',
