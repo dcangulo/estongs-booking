@@ -12,7 +12,7 @@ Version 1.0.0
 5. ~~Date picker color~~
 6. ~~Add item to form~~
 7. ~~Compute price in form~~
-8. **Add payment shorcode**
+8. ~~Add payment shorcode~~
 9. ~~Fix enum statuses~~
 10. ~~Email Notifications~~
 11. ~~Calendar View~~
@@ -26,9 +26,11 @@ Version 1.0.0
 19. ~~Invalid dates crud~~
 20. **Reservations crud**
 21. ~~Settings start date~~
-22. **Migrations**
-23. **Paypal (branch)**
-24. **Cart (branch)**
+22. **Add payment amount column**
+23. **Add total column on booking products**
+24. **Migrations**
+25. **Paypal (branch)**
+26. **Cart (branch)**
 
 ## License
 Copyright © 2019 David Angulo, released under the MIT license, see [LICENSE](LICENSE).
