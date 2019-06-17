@@ -26,8 +26,8 @@ Version 1.0.0
 19. ~~Invalid dates crud~~
 20. **Reservations crud**
 21. ~~Settings start date~~
-22. **Add payment amount column**
-23. **Add total column on booking products**
+22. ~~Add payment amount column~~
+23. ~~Add total column on booking products~~
 24. **Migrations**
 25. **Paypal (branch)**
 26. **Cart (branch)**

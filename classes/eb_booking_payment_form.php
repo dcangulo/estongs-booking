@@ -97,6 +97,7 @@ class EbBookingPaymentForm {
       $this->wpdb->update(EB_BOOKINGS_TABLE, [
         'payment_type' => esc_sql($eb_booking_payment['type']),
         'payment_reference' => esc_sql($eb_booking_payment['reference']),
+        'payment_amount' => esc_sql($eb_booking_payment['amount']),
         'payment_status' => 2
       ], [
         'id' => esc_sql($eb_booking_payment['order_number']),

@@ -26,10 +26,11 @@ class EbBookingForm {
         `delivery_date` TIMESTAMP NULL DEFAULT NULL,
         `address` TEXT,
         `additional_notes` TEXT,
-        `total` DECIMAL(13, 4) DEFAULT 0.0000,
+        `total` DECIMAL(19, 2) DEFAULT 0.00,
         `token` VARCHAR(220) DEFAULT '',
         `payment_type` VARCHAR(220) DEFAULT '',
         `payment_reference` VARCHAR(220) DEFAULT '',
+        `payment_amount` DECIMAL(19, 2) DEFAULT 0.00,
         `payment_status` INT DEFAULT 1,
         `booking_status` INT DEFAULT 1,
         `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -43,7 +44,7 @@ class EbBookingForm {
         `id` INT(11) NOT NULL AUTO_INCREMENT,
         `name` VARCHAR(220) DEFAULT '',
         `sku` VARCHAR(220) DEFAULT '',
-        `price` DECIMAL(13, 4) DEFAULT 0.0000,
+        `price` DECIMAL(19, 2) DEFAULT 0.00,
         `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
         PRIMARY KEY (`id`)
@@ -72,6 +73,7 @@ class EbBookingForm {
         `booking_id` int(11) NOT NULL,
         `product_id` int(11) NOT NULL,
         `quantity` INT(11) DEFAULT 0,
+        `subtotal` DECIMAL(19, 2) DEFAULT 0.00,
         `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
         PRIMARY KEY (`id`)
@@ -211,7 +213,8 @@ class EbBookingForm {
         $this->wpdb->insert(EB_BOOKING_PRODUCTS, [
           'booking_id' => $booking_id,
           'product_id' => $eb_booking_product['id'],
-          'quantity' => $eb_booking_product['quantity']
+          'quantity' => $eb_booking_product['quantity'],
+          'subtotal' => $eb_booking_product['subtotal']
         ]);
       }
 

@@ -94,7 +94,7 @@ jQuery(document).ready(($) => {
         ).shift()
 
         matchedProduct.quantity += selectedProduct.quantity
-        matchedProduct.price += selectedProduct.price
+        matchedProduct.subtotal += selectedProduct.subtotal
 
         combinedProducts = combinedProducts.filter((combinedProduct) =>
           combinedProduct.sku !== selectedProduct.sku
@@ -274,7 +274,7 @@ jQuery(document).ready(($) => {
         id: productSelectedId,
         sku: productSelected,
         quantity: quantity,
-        price: productTotal
+        subtotal: productTotal
       }
 
       selectedProducts.push(product)
